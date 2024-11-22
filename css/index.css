@@ -15,7 +15,7 @@ body{
 
 .bg-light {
     background-color: #F8F9FA !important; 
-	border: 1px solid #000;
+	border-bottom: 1px solid #000;
     margin-bottom: 5px;
 }
 
@@ -35,7 +35,6 @@ a:hover {
 
 .card {
 	height: 100%;
-	width: 69%;
 	display: flex;
     flex-direction: column;
     justify-content: space-between;
