@@ -6,6 +6,7 @@ body{
     font-family: "Roboto Condensed", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+    
 }
 
 .navbar-brand img {
@@ -14,7 +15,7 @@ body{
 
 .bg-light {
     background-color: #F8F9FA !important; 
-	  border-bottom: 1px solid #000;
+	border: 1px solid #000;
     margin-bottom: 5px;
 }
 
@@ -31,57 +32,53 @@ a:hover {
 
 	
 }
-.card {
-	height: 100%; /* Faz os cards terem o mesmo tamanho */
-	display: flex;
-	flex-direction: column; /* Para que o conteúdo dentro do card se ajuste */
-	justify-content: space-between;
-}
 
-.card-body {
-	flex-grow: 1; /* Garante que o conteúdo do card ocupe o espaço restante */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Para garantir que os conteúdos dentro do card sejam distribuídos */
-}
-
-/* Sombra leve e transição para efeito de hover */
 .card {
+	height: 100%;
+	width: 69%;
 	display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
+   
 }
+
+.card-body {
+	flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+
 
 .card:hover {
-	transform: scale(1.05); /* Leve aumento no hover */
-}
+	transform: scale(1.05); }
 
-/* Icones do card */
+
 .card-icon {
 	font-size: 3rem;
-	color: #6F42C1; /* Roxo elegante */
+	color: #6F42C1; 
 }
 
-/* Ajustes na margem do container para afastar os cards da header */
+
 .container.mt-5 {
-	margin-top: 200px; /* Aumentado o valor para afastar ainda mais da header */
+	margin-top: 200px; 
 }
 
-/* Ajustes na largura dos cards em diferentes resoluções */
 .col-md-6, .col-lg-3 {
 	display: flex;
 	justify-content: center;
 }
 .footer {
     /* border-top: 1px solid #000;  */
-    background-color: #f8f9fa; /* Cor de fundo clara */
-    color: #333; /* Texto em tom escuro */
+    background-color: #f8f9fa; 
+    color: #333; 
     position: fixed; 
     bottom: 0;
     width: 100%; 
-    text-align: center; /* Centraliza o conteúdo */
-    padding: 10px 0; /* Espaçamento interno */
-    z-index: 1000; /* Garante que fique acima de outros elementos */
+    text-align: center; 
+    padding: 10px 0; 
+    z-index: 1000; 
 }
