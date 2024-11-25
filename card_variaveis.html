@@ -1,15 +1,131 @@
 <!DOCTYPE html>
-<html lang="en" lang="pt-br">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Variáveis e Operações</title>
+<html lang="pt-br">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogicFlux - Montar Fluxograma</title>
+ 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    </head>
+    <link href="css/index.css" rel="stylesheet">
+    
+</head>
 
-	<body></body>
+<body>
+    <!-- Header -->
+    <header class="text-center">
+        <h2>LogicFlux - Resolva problemas criando fluxos lágicos</h1>
+    </header>
 
+    <!-- Main Content -->
+    <main class="container my-4">
+        <!-- Descrição do Desafio -->
+        <section id="desafio" class="mb-4">
+            <h3 class="descricao">Descrição do Desafio</h3>
+            <p class="text-center">
+                Neste desafio, você deve criar um fluxograma para simular um processo onde o sistema verifica se um número é par ou ímpar e exibe o resultado.
+            </p>
+        </section>
 
+        <!-- Simbolos e Editor -->
+        <div class="row g-4">
+            <!-- Simbolos -->
+            <div class="col-md-4">
+                <div id="simbolos">
+                    <h3 class="tituloS">Símbolos do Fluxograma</h3>
+                    <div class="symbol" draggable="true">Início</div>
+                    <div class="symbol" draggable="true">Processo</div>
+                    <div class="symbol" draggable="true">Decisão</div>
+                    <div class="symbol" draggable="true">Entrada/Saída</div>
+                    <div class="symbol" draggable="true">Fim</div>
+                </div>
+            </div>
+
+            <!-- Editor -->
+            <div class="col-md-8">
+                <div id="editor">
+                    <h3 class="text-center">Área de Criação</h3>
+                    <div id="workspace">
+                        Solte os símbolos aqui
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão de Submissão -->
+        <div class="text-center mt-4">
+            <button id="submit-button" class="btn btn-lg">Submeter Fluxograma</button>
+        </div>
+    </main>
+
+    
+    <footer>
+        <p>&copy; 2024 LogicFlux - Sistema de Ensino</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsplumb@2.14.0/dist/js/jsplumb.min.js"></script>
+
+    <script>document.addEventListener("DOMContentLoaded", () => {
+        const workspace = document.getElementById("workspace");
+    
+        // Inicializar jsPlumb
+        const instance = jsPlumb.getInstance({
+            Connector: "Bezier", // Tipo de conexão
+            PaintStyle: { stroke: "blue", strokeWidth: 2 }, // Estilo da linha
+            Endpoint: ["Dot", { radius: 5 }], // Estilo dos pontos
+            EndpointStyle: { fill: "blue" }, // Cor dos pontos
+            Container: "workspace",
+        });
+    
+        // Tornar os elementos do workspace arrastáveis
+        instance.draggable(workspace.children, { grid: [10, 10] });
+    
+        // Ativar drag-and-drop para os símbolos
+        const symbols = document.querySelectorAll(".symbol");
+        symbols.forEach(symbol => {
+            symbol.addEventListener("dragstart", event => {
+                event.dataTransfer.setData("text", event.target.outerHTML); // Passar o HTML do símbolo
+            });
+        });
+    
+        // Permitir que os símbolos sejam soltos no workspace
+        workspace.addEventListener("dragover", event => {
+            event.preventDefault(); // Permitir drop
+        });
+    
+        workspace.addEventListener("drop", event => {
+            event.preventDefault();
+            const symbolHTML = event.dataTransfer.getData("text");
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = symbolHTML;
+            const newSymbol = tempDiv.firstChild;
+    
+            // Ajustar posição do novo símbolo
+            const rect = workspace.getBoundingClientRect();
+            newSymbol.style.position = "absolute";
+            newSymbol.style.left = `${event.clientX - rect.left}px`;
+            newSymbol.style.top = `${event.clientY - rect.top}px`;
+            newSymbol.id = `symbol-${Date.now()}`; // ID único
+    
+            workspace.appendChild(newSymbol);
+            instance.draggable(newSymbol); // Tornar o novo símbolo arrastável
+    
+            // Configurar pontos de conexão para o símbolo
+            instance.addEndpoint(newSymbol, {
+                anchors: ["Top", "Bottom"],
+                isSource: true,
+                isTarget: true,
+            });
+        });
+    
+        // Adicionar evento de conexão entre elementos
+        instance.bind("connection", info => {
+            console.log(`Conexão criada: ${info.sourceId} -> ${info.targetId}`);
+        });
+    });
+    </script>
+
+</body>
 
 </html>
