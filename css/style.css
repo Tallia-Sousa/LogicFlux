@@ -1,12 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
-    background-color:#a5cfe3;
+    background-color:#F8F9FA;
     font-family: "Roboto Condensed", sans-serif;
     margin: 0;
     padding: 0;
 }
 
+.introduz{
+    background-color: #ffffff;
+	padding: 15px 30px;
+	border-bottom: 1px solid #ddd;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 .card {
 	height: 100%;
 	display: flex;
@@ -17,9 +25,7 @@ body {
    
 }
 
-.navbar {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-}
+
 
 .navbar-brand img {
     max-height: 40px; 
@@ -39,8 +45,13 @@ a:hover {
 }
 
 .bg-light {
-    background-color:  #F8F9FA !important; 
-    border-bottom: 1px solid #000;
+   
+    background-color: #ffffff;
+	padding: 15px 30px;
+	border-bottom: 1px solid #ddd;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 header {
@@ -99,10 +110,46 @@ header .btn:hover {
 
 
     footer {
-        background-color: #F8F9FA;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-        border-top: 1px solid #000;
-        padding-top: 20px;
-        padding-bottom: 20px; 
+        background-color: #ffffff;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #777;
+        border-top: 1px solid #ddd;
     
 }
+
+/* cards e variaveis */
+
+.back-icon {
+	font-size: 1.5rem;
+	color: #007bff;
+	text-decoration: none;
+}
+.back-icon:hover {
+	color: #0056b3;
+}
+.intro-section {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding: 40px 0;
+}
+.intro-text h2 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+.intro-text p {
+	font-size: 0.9rem;
+	color: #555;
+}
+.challenge-card {
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.challenge-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+
