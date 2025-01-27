@@ -3,114 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogicFlux</title>
-    <!--  -->
+    <title>LogicFlux - Treine Lógica de Programação</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="css/index.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
- 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
         <div class="container-fluid">
-            <h2>LogicFlux</h2>
+            <a class="navbar-brand fw-bold" href="#">LogicFlux</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!--  -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#cards-section">Desafios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Ajuda</a>
-                    </li>
-                </ul>
+                        <a class="nav-link" href="#help">Ajuda</a>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
-<br>
-<br>
 
-
-    <div class="apresentation">
-        <h3 class="text-center mb-4">Escolha por onde começar a treinar lógica de programação</h1>
-	</div>
-
-
-	<br>
-	<br>
-	
-
-    <div class="container mt-5">
-        
-        <div id="cards-section" class="row g-4">
-            <!-- Linha 1: 2 Blocos -->
-            <div class="col-md-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Variáveis e Operações</h5>
-                        <p class="card-text">Aprenda como manipular dados e realizar cálculos.</p>
-                        <a href="card_variaveis.html" class="btn btn-primary">Explorar</a>
+  
+    <header class="text-center py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Coluna da imagem -->
+                <div class="col-md-6 text-center order-1 order-md-2">
+                    <div class="p-4 rounded">
+                        <img src="/img/LogicFlux(7).png" alt="Imagem do LogicFlux" class="img-fluid rounded">
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Estruturas Condicionais</h5>
-                        <p class="card-text">Entenda como tomar decisões em seus programas.</p>
-                        <a href="#cards-section" class="btn btn-primary">Explorar</a>
-                    </div>
+                <!-- Coluna do texto -->
+                <div class="col-md-6 text-md-start order-2 order-md-1">
+                    <h1 class="display-4">Bem-vindo ao LogicFlux</h1>
+                    <p class="lead mt-3">Desenvolva seu pensamento lógico com nossos desafios interativos e fluxogramas, ajudando você a aprender antes de codificar.</p>
+    
+                    <!-- Seção "Sobre" dentro do header -->
+                    <h2 class="fw-bold mt-4">O que é o LogicFlux?</h2>
+                    <p class="mt-3">
+                        LogicFlux é uma plataforma interativa criada para ajudar estudantes e professores a aprenderem e ensinarem lógica de programação. 
+                        Através de desafios práticos e fluxogramas, você poderá desenvolver suas habilidades de resolução de problemas antes mesmo de escrever uma linha de código.
+                    </p>
+    
+                    <a href="#cards-section" class="btn btn-light btn-lg mt-4">Comece Agora</a>
                 </div>
             </div>
-
-            <!-- Linha 2: 2 Blocos -->
-            <div class="col-md-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Estruturas de Repetição</h5>
-                        <p class="card-text">Automatize tarefas repetitivas de forma eficiente.</p>
-                        <a href="#cards-section" class="btn btn-primary">Explorar</a>
+        </div>
+    </header>
+    
+   
+    <section id="cards-section" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-4">Escolha por onde começar</h2>
+            <div class="row g-4">
+                <!-- Variáveis e Operações -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Variáveis e Operações</h5>
+                            <p class="card-text">Aprenda como manipular dados e realizar cálculos.</p>
+                            <a href="card_variaveis.html" class="btn btn-primary">Explorar</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Estruturas de Dados</h5>
-                        <p class="card-text">Organize e manipule informações de forma eficiente.</p>
-                        <a href="#cards-section" class="btn btn-primary">Explorar</a>
+                <!-- Estruturas Condicionais -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Estruturas Condicionais</h5>
+                            <p class="card-text">Entenda como tomar decisões em seus programas.</p>
+                            <a href="#" class="btn btn-primary">Explorar</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Estruturas de Repetição -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Estruturas de Repetição</h5>
+                            <p class="card-text">Automatize tarefas repetitivas de forma eficiente.</p>
+                            <a href="#" class="btn btn-primary">Explorar</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Estruturas de Dados -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Estruturas de Dados</h5>
+                            <p class="card-text">Organize e manipule informações de forma eficiente.</p>
+                            <a href="#" class="btn btn-primary">Explorar</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-	<br>
-	<br>
-	<br>
-	
+    <!-- Ajuda -->
+    <section id="help" class="py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold">Precisa de Ajuda?</h2>
+            <p class="mt-3">Se você tiver dúvidas ou encontrar dificuldades, consulte a seção de ajuda ou entre em contato conosco.</p>
+            <a href="#" class="btn btn-outline-primary">Acessar Ajuda</a>
+        </div>
+    </section>
 
-  
+    <!-- Footer -->
+    <footer class=" text-darck py-4">
+        <div class="container text-center">
+            <p class="mb-0">© 2024 LogicFlux. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll Suave -->
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
             });
         });
     </script>
-
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
