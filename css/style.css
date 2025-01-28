@@ -246,4 +246,70 @@ header .btn:hover {
       #editor h3 {
         color: #555;
       }
+
+    .editor-block {
+        position: absolute;
+        background: #ffffff;
+        border: 2px solid #888;
+        padding: 10px;
+        cursor: pointer;
+        max-width: 300px;
+        word-wrap: break-word;
+      }
+  
+      .editor-block[data-type="start"],
+      .editor-block[data-type="end"] {
+        background-color: #e9f5e9;
+        border-color: #4caf50;
+        font-weight: bold;
+        cursor: default;
+      }
+  
+      .editor-block:hover {
+        border-color: #555;
+      }
+  
+      #modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 2px solid #888;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 1000;
+        max-width: 400px;
+        width: 100%;
+      }
+  
+      #modal h3 {
+        margin-top: 0;
+      }
+  
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+  
+      #modal button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+  
+      #modal button:hover {
+        background: #45a049;
+      }
   

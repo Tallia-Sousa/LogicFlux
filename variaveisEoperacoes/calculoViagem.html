@@ -11,7 +11,7 @@
 <body>
   <!-- Cabeçalho -->
   <header class="introduz">
-    <a href="javascript:history.back()" class="back-icon">
+    <a href="" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
     <button id="submit-btn">
@@ -55,6 +55,26 @@
       </div>
     </div>
 
+
+
+	<div id="overlay"></div>
+	<div id="modal">
+	  <h3>Configurar Bloco</h3>
+	  <form id="blockForm">
+		<label for="blockName">Nome do Bloco:</label>
+		<input type="text" id="blockName"><br><br>
+  
+		<div id="paramSection">
+		  <label for="blockExpression">Expressão:</label>
+		  <textarea id="blockExpression" rows="3" placeholder="Exemplo: custoViagem = precoLitro * quantidadeCombustivel + custoAdicional"></textarea>
+		</div>
+  
+		<button type="button" id="saveBlock">Salvar</button>
+	  </form>
+	</div>
+
+
+    <script src="../js/editorcalculo.js"></script>
     <footer>
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
