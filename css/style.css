@@ -96,7 +96,7 @@ header .btn:hover {
     background-color: #0d6efd;
 }
 
-/* Responsividade */
+
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;
