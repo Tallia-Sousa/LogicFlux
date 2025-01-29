@@ -161,7 +161,7 @@ header .btn:hover {
         padding: 8px 15px;
         font-size: 14px;
         cursor: pointer;
-        border-radius: 20px;
+        border-radius: 4px; 
         display: flex;
         align-items: center;
         gap: 8px;
@@ -230,6 +230,15 @@ header .btn:hover {
         border-radius: 4px;
       }
   
+      .blue-block {
+        background-color: #0d6efd !important;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+      }
+      
       .block:hover {
         background: #0b5ed7;
       }
@@ -313,3 +322,32 @@ header .btn:hover {
         background: #45a049;
       }
   
+      /* Estilos para o Modal de Confirmação */
+.delete-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+}
+
+.delete-modal button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-modal button:hover {
+  background-color: #d32f2f;
+}
+
+

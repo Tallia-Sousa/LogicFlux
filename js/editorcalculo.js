@@ -1,6 +1,7 @@
 const palette = document.getElementById("palette");
 const editor = document.getElementById("editor");
 const modal = document.getElementById("modal");
+const deleteModal = document.getElementById("deleteModal");
 const overlay = document.getElementById("overlay");
 const blockForm = document.getElementById("blockForm");
 const blockName = document.getElementById("blockName");
@@ -8,18 +9,15 @@ const blockExpression = document.getElementById("blockExpression");
 const saveBlockButton = document.getElementById("saveBlock");
 
 let currentBlock = null;
+let selectedType = null;
+let blockToDelete = null;
+let clickTimeout = null;
 
 function openModal(block) {
   currentBlock = block;
-
-  // Só abrir o modal para blocos configuráveis
-  if (block.dataset.type === "start" || block.dataset.type === "end") {
-	return; // Bloqueia para "Início" e "Fim"
-  }
-
+  if (block.dataset.type === "start" || block.dataset.type === "end") return;
   blockName.value = block.dataset.name || "";
   blockExpression.value = block.dataset.expression || "";
-
   modal.style.display = "block";
   overlay.style.display = "block";
 }
@@ -32,18 +30,101 @@ function closeModal() {
 
 saveBlockButton.addEventListener("click", () => {
   if (currentBlock) {
-	currentBlock.dataset.name = blockName.value;
-	currentBlock.dataset.expression = blockExpression.value;
-	currentBlock.innerText = `${blockName.value}: ${blockExpression.value}`;
+    currentBlock.dataset.name = blockName.value;
+    currentBlock.dataset.expression = blockExpression.value;
+    currentBlock.innerText = `${blockName.value}: ${blockExpression.value}`;
   }
   closeModal();
 });
 
-overlay.addEventListener("click", closeModal);
+function createBlock(type, x, y) {
+  const newBlock = document.createElement("div");
+  newBlock.classList.add("editor-block", "blue-block"); // Garante a cor azul
+  newBlock.dataset.type = type;
+  newBlock.style.left = `${x - editor.offsetLeft}px`;
+  newBlock.style.top = `${y - editor.offsetTop}px`;
+
+  if (type === "start") {
+    newBlock.innerText = "Início";
+  } else if (type === "end") {
+    newBlock.innerText = "Fim";
+  } else {
+    newBlock.innerText = `${type} Bloco`;
+  }
+
+  newBlock.addEventListener("click", () => handleClick(newBlock));
+  newBlock.addEventListener("dblclick", () => showDeleteModal(newBlock));
+  makeBlockMovable(newBlock);
+
+  editor.appendChild(newBlock);
+}
+
+
+function handleClick(block) {
+  if (clickTimeout) {
+    clearTimeout(clickTimeout);
+    clickTimeout = null;
+    showDeleteModal(block);
+  } else {
+    clickTimeout = setTimeout(() => {
+      openModal(block);
+      clickTimeout = null;
+    }, 300);
+  }
+}
+
+function showDeleteModal(block) {
+  blockToDelete = block;
+  deleteModal.style.display = "block";
+  overlay.style.display = "block";
+}
+
+function closeDeleteModal() {
+  deleteModal.style.display = "none";
+  overlay.style.display = "none";
+  blockToDelete = null;
+}
+
+document.getElementById("confirmDelete").addEventListener("click", () => {
+  if (blockToDelete) blockToDelete.remove();
+  closeDeleteModal();
+});
+
+document.getElementById("cancelDelete").addEventListener("click", () => {
+  closeDeleteModal();
+});
+
+function makeBlockMovable(block) {
+  let offsetX, offsetY, isDragging = false;
+
+  block.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - block.offsetLeft;
+    offsetY = e.clientY - block.offsetTop;
+    block.style.position = "absolute";
+    block.style.zIndex = "1000";
+
+    function moveBlock(e) {
+      if (!isDragging) return;
+      block.style.left = `${e.clientX - offsetX}px`;
+      block.style.top = `${e.clientY - offsetY}px`;
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      document.removeEventListener("mousemove", moveBlock);
+      document.removeEventListener("mouseup", stopDragging);
+      block.style.zIndex = "auto";
+    }
+
+    document.addEventListener("mousemove", moveBlock);
+    document.addEventListener("mouseup", stopDragging);
+  });
+}
 
 palette.addEventListener("dragstart", (e) => {
   if (e.target.classList.contains("block")) {
-	e.dataTransfer.setData("text/plain", e.target.dataset.type);
+    e.dataTransfer.setData("text/plain", e.target.dataset.type);
   }
 });
 
@@ -52,20 +133,20 @@ editor.addEventListener("dragover", (e) => e.preventDefault());
 editor.addEventListener("drop", (e) => {
   e.preventDefault();
   const type = e.dataTransfer.getData("text/plain");
-  const newBlock = document.createElement("div");
-  newBlock.classList.add("editor-block");
-  newBlock.dataset.type = type;
-  newBlock.style.left = `${e.clientX - editor.offsetLeft}px`;
-  newBlock.style.top = `${e.clientY - editor.offsetTop}px`;
+  createBlock(type, e.clientX, e.clientY);
+});
 
-  if (type === "start") {
-	newBlock.innerText = "Início";
-  } else if (type === "end") {
-	newBlock.innerText = "Fim";
-  } else {
-	newBlock.innerText = `${type} Bloco`;
+palette.addEventListener("touchstart", (e) => {
+  if (e.target.classList.contains("block")) {
+    selectedType = e.target.dataset.type;
+    e.target.style.background = "#ddd";
   }
+});
 
-  newBlock.addEventListener("click", () => openModal(newBlock));
-  editor.appendChild(newBlock);
+editor.addEventListener("touchend", (e) => {
+  if (selectedType) {
+    const touch = e.changedTouches[0];
+    createBlock(selectedType, touch.clientX, touch.clientY);
+    selectedType = null;
+  }
 });

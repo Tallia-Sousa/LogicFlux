@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio: Calcular Custo Total da Viagem</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
   
 </head>
 <body>
   
   <header class="introduz">
-	<a href="variaveis.html" class="back-icon">
+	<a href="/operacoes/variaveis.html" class="back-icon">
 		<i class="bi bi-arrow-left"></i>
 	</a>
 	
@@ -52,9 +54,18 @@
 
       <div id="editor">
         <h3>Editor de Fluxogramas</h3>
-        <p>Arraste e solte os blocos do lado esquerdo para criar seu fluxo aqui. Clique em um bloco para editar e definir valores.</p>
+        
       </div>
     </div>
+
+       <!-- exclusão -->
+<div id="overlay" class="overlay"></div>
+<div id="deleteModal" class="delete-modal">
+  <h3>Tem certeza que deseja excluir este bloco?</h3>
+  <button id="confirmDelete">Sim</button>
+  <button id="cancelDelete">Não</button>
+</div>
+
 
 
 
