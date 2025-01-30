@@ -5,18 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio: Calcular Custo Total da Viagem</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
-  
 </head>
 <body>
-  
   <header class="introduz">
-	<a href="/operacoes/variaveis.html" class="back-icon">
-		<i class="bi bi-arrow-left"></i>
-	</a>
-	
+    <a href="/operacoes/variaveis.html" class="back-icon">
+      <i class="bi bi-arrow-left"></i>
+    </a>
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
@@ -27,24 +23,19 @@
     <div id="instructions">
       <h2>Desafio: Calcular o Custo Total da Viagem</h2>
       <p>Este desafio tem como objetivo praticar a criação de fluxogramas que simulam algoritmos para resolver problemas reais.</p>
-      <p>
-        O desafio é calcular o custo total de uma viagem com base nos seguintes fatores:
-      </p>
+      <p>O desafio é calcular o custo total de uma viagem com base nos seguintes fatores:</p>
       <ul>
         <li><strong>Preço do combustível:</strong> Informe o valor por litro.</li>
         <li><strong>Quantidade de combustível necessária:</strong> Calcule com base na distância da viagem e no consumo do veículo.</li>
         <li><strong>Custo adicional fixo:</strong> Insira um valor para custos extras, como pedágios ou alimentação.</li>
       </ul>
-      <p>
-        Crie um fluxo no editor abaixo que receba essas informações, processe os dados e exiba o custo total da viagem. 
-        O sistema validará se o fluxo criado está correto, transformando-o em um algoritmo equivalente.
-      </p>
+      <p>Crie um fluxo no editor abaixo que receba essas informações, processe os dados e exiba o custo total da viagem.</p>
     </div>
 
     <div id="main">
       <div id="palette">
         <h3>Blocos</h3>
-        <p>Clique duas vezes em um bloco para editá-lo e definir valores personalizados.</p>
+        <p>Clique duas vezes em um bloco para editar ou excluir.</p>
         <div class="block" draggable="true" data-type="start">Início</div>
         <div class="block" draggable="true" data-type="input">Entrada</div>
         <div class="block" draggable="true" data-type="process">Processo</div>
@@ -54,42 +45,34 @@
 
       <div id="editor">
         <h3>Editor de Fluxogramas</h3>
-        
       </div>
     </div>
 
-       <!-- exclusão -->
-<div id="overlay" class="overlay"></div>
-<div id="deleteModal" class="delete-modal">
-  <h3>Tem certeza que deseja excluir este bloco?</h3>
-  <button id="confirmDelete">Sim</button>
-  <button id="cancelDelete">Não</button>
-</div>
+    <div id="menuModal" class="menu-modal">
+      <ul>
+        <li id="editOption">Editar</li>
+        <li id="deleteOption">Excluir</li>
+      </ul>
+    </div>
 
+    <div id="modal" class="modal">
+      <h3>Configurar Bloco</h3>
+      <form id="blockForm">
+        <label for="blockName">Nome do Bloco:</label>
+        <input type="text" id="blockName"><br><br>
+        <label for="blockExpression">Expressão:</label>
+        <textarea id="blockExpression" rows="3"></textarea><br><br>
+        <button type="button" id="saveBlock">Salvar</button>
+      </form>
+    </div>
 
+    <div id="overlay" class="overlay"></div>
 
-
-	<div id="overlay"></div>
-	<div id="modal">
-	  <h3>Configurar Bloco</h3>
-	  <form id="blockForm">
-		<label for="blockName">Nome do Bloco:</label>
-		<input type="text" id="blockName"><br><br>
-  
-		<div id="paramSection">
-		  <label for="blockExpression">Expressão:</label>
-		  <textarea id="blockExpression" rows="3" placeholder="Exemplo: custoViagem = precoLitro * quantidadeCombustivel + custoAdicional"></textarea>
-		</div>
-  
-		<button type="button" id="saveBlock">Salvar</button>
-	  </form>
-	</div>
-
-
-    <script src="../js/editorcalculo.js"></script>
     <footer>
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
   </div>
+
+  <script src="../js/editorcalculo.js"></script>
 </body>
 </html>

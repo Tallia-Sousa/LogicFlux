@@ -1,7 +1,7 @@
 const palette = document.getElementById("palette");
 const editor = document.getElementById("editor");
+const menuModal = document.getElementById("menuModal");
 const modal = document.getElementById("modal");
-const deleteModal = document.getElementById("deleteModal");
 const overlay = document.getElementById("overlay");
 const blockForm = document.getElementById("blockForm");
 const blockName = document.getElementById("blockName");
@@ -9,13 +9,10 @@ const blockExpression = document.getElementById("blockExpression");
 const saveBlockButton = document.getElementById("saveBlock");
 
 let currentBlock = null;
-let selectedType = null;
 let blockToDelete = null;
-let clickTimeout = null;
 
 function openModal(block) {
   currentBlock = block;
-  if (block.dataset.type === "start" || block.dataset.type === "end") return;
   blockName.value = block.dataset.name || "";
   blockExpression.value = block.dataset.expression || "";
   modal.style.display = "block";
@@ -39,7 +36,7 @@ saveBlockButton.addEventListener("click", () => {
 
 function createBlock(type, x, y) {
   const newBlock = document.createElement("div");
-  newBlock.classList.add("editor-block", "blue-block"); // Garante a cor azul
+  newBlock.classList.add("editor-block", "blue-block");
   newBlock.dataset.type = type;
   newBlock.style.left = `${x - editor.offsetLeft}px`;
   newBlock.style.top = `${y - editor.offsetTop}px`;
@@ -52,47 +49,10 @@ function createBlock(type, x, y) {
     newBlock.innerText = `${type} Bloco`;
   }
 
-  newBlock.addEventListener("click", () => handleClick(newBlock));
-  newBlock.addEventListener("dblclick", () => showDeleteModal(newBlock));
+  newBlock.addEventListener("dblclick", () => showMenuModal(newBlock));
   makeBlockMovable(newBlock);
-
   editor.appendChild(newBlock);
 }
-
-
-function handleClick(block) {
-  if (clickTimeout) {
-    clearTimeout(clickTimeout);
-    clickTimeout = null;
-    showDeleteModal(block);
-  } else {
-    clickTimeout = setTimeout(() => {
-      openModal(block);
-      clickTimeout = null;
-    }, 300);
-  }
-}
-
-function showDeleteModal(block) {
-  blockToDelete = block;
-  deleteModal.style.display = "block";
-  overlay.style.display = "block";
-}
-
-function closeDeleteModal() {
-  deleteModal.style.display = "none";
-  overlay.style.display = "none";
-  blockToDelete = null;
-}
-
-document.getElementById("confirmDelete").addEventListener("click", () => {
-  if (blockToDelete) blockToDelete.remove();
-  closeDeleteModal();
-});
-
-document.getElementById("cancelDelete").addEventListener("click", () => {
-  closeDeleteModal();
-});
 
 function makeBlockMovable(block) {
   let offsetX, offsetY, isDragging = false;
@@ -122,13 +82,72 @@ function makeBlockMovable(block) {
   });
 }
 
+function showMenuModal(block) {
+ 
+  if (block.innerText === "Início" || block.innerText === "Fim") {
+ 
+    blockToDelete = block;
+    menuModal.style.display = "block";
+    
+    const blockRect = block.getBoundingClientRect();
+    menuModal.style.left = `${blockRect.right + 5}px`;  
+    menuModal.style.top = `${blockRect.top}px`;  
+    document.getElementById("editOption").style.display = "none"; // 
+  } else {
+
+    blockToDelete = block;
+    menuModal.style.display = "block";
+
+    const blockRect = block.getBoundingClientRect();
+    menuModal.style.left = `${blockRect.right + 5}px`; 
+    menuModal.style.top = `${blockRect.top}px`;  
+   
+    document.getElementById("editOption").style.display = "inline"; 
+  }
+}
+
+
+function closeMenuModal() {
+  menuModal.style.display = "none";
+  overlay.style.display = "none";
+  blockToDelete = null;
+}
+
+document.getElementById("editOption").addEventListener("click", () => {
+  if (blockToDelete) {
+    openModal(blockToDelete);
+  }
+  closeMenuModal();
+});
+
+document.getElementById("deleteOption").addEventListener("click", () => {
+  if (blockToDelete) {
+    blockToDelete.remove();
+  }
+  closeMenuModal();
+});
+
+// Permite arrastar blocos apenas da paleta
 palette.addEventListener("dragstart", (e) => {
-  if (e.target.classList.contains("block")) {
+  
+  if (e.target.classList.contains("block") && palette.contains(e.target)) {
     e.dataTransfer.setData("text/plain", e.target.dataset.type);
+  } else {
+    e.preventDefault(); 
   }
 });
 
-editor.addEventListener("dragover", (e) => e.preventDefault());
+editor.addEventListener("dragstart", (e) => {
+  if (e.target.classList.contains("editor-block")) {
+    e.preventDefault();
+  }
+});
+
+
+editor.addEventListener("dragover", (e) => {
+  e.preventDefault(); // Permite o drop apenas no editor
+});
+
 
 editor.addEventListener("drop", (e) => {
   e.preventDefault();
@@ -136,17 +155,5 @@ editor.addEventListener("drop", (e) => {
   createBlock(type, e.clientX, e.clientY);
 });
 
-palette.addEventListener("touchstart", (e) => {
-  if (e.target.classList.contains("block")) {
-    selectedType = e.target.dataset.type;
-    e.target.style.background = "#ddd";
-  }
-});
-
-editor.addEventListener("touchend", (e) => {
-  if (selectedType) {
-    const touch = e.changedTouches[0];
-    createBlock(selectedType, touch.clientX, touch.clientY);
-    selectedType = null;
-  }
-});
+// Fecha o menu modal ao clicar no overlay
+overlay.addEventListener("click", closeMenuModal);
