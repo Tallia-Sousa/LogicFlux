@@ -11,6 +11,10 @@ const saveBlockButton = document.getElementById("saveBlock");
 let currentBlock = null;
 let blockToDelete = null;
 
+
+
+
+
 function openModal(block) {
   currentBlock = block;
   blockName.value = block.dataset.name || "";
@@ -58,29 +62,41 @@ function makeBlockMovable(block) {
   let offsetX, offsetY, isDragging = false;
 
   block.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - block.offsetLeft;
-    offsetY = e.clientY - block.offsetTop;
-    block.style.position = "absolute";
-    block.style.zIndex = "1000";
+      isDragging = true;
+      offsetX = e.clientX - block.offsetLeft;
+      offsetY = e.clientY - block.offsetTop;
+      block.style.position = "absolute";
+      block.style.zIndex = "1000";
 
-    function moveBlock(e) {
-      if (!isDragging) return;
-      block.style.left = `${e.clientX - offsetX}px`;
-      block.style.top = `${e.clientY - offsetY}px`;
-    }
+      function moveBlock(e) {
+          if (!isDragging) return;
+          block.style.left = `${e.clientX - offsetX}px`;
+          block.style.top = `${e.clientY - offsetY}px`;
+          updateConnections();
+      }
 
-    function stopDragging() {
-      isDragging = false;
-      document.removeEventListener("mousemove", moveBlock);
-      document.removeEventListener("mouseup", stopDragging);
-      block.style.zIndex = "auto";
-    }
+      function stopDragging() {
+          isDragging = false;
+          document.removeEventListener("mousemove", moveBlock);
+          document.removeEventListener("mouseup", stopDragging);
+          block.style.zIndex = "auto";
+      }
 
-    document.addEventListener("mousemove", moveBlock);
-    document.addEventListener("mouseup", stopDragging);
+      document.addEventListener("mousemove", moveBlock);
+      document.addEventListener("mouseup", stopDragging);
   });
 }
+
+const style = document.createElement("style");
+style.innerHTML = `
+    .connection-line {
+        position: absolute;
+        background-color: black;
+        height: 2px;
+        transform-origin: left;
+    }
+`;
+document.head.appendChild(style);
 
 function showMenuModal(block) {
  
@@ -105,7 +121,6 @@ function showMenuModal(block) {
     document.getElementById("editOption").style.display = "inline"; 
   }
 }
-
 
 function closeMenuModal() {
   menuModal.style.display = "none";
@@ -143,11 +158,9 @@ editor.addEventListener("dragstart", (e) => {
   }
 });
 
-
 editor.addEventListener("dragover", (e) => {
   e.preventDefault(); // Permite o drop apenas no editor
 });
-
 
 editor.addEventListener("drop", (e) => {
   e.preventDefault();
