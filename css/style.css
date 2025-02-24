@@ -27,7 +27,7 @@ body {
 
 
 
-.navbar-brand img {
+.navbar-brand img { 
     max-height: 40px; 
 }
 
@@ -141,8 +141,8 @@ header .btn:hover {
 	margin-bottom: 10px;
 }
 .intro-text p {
-	font-size: 0.9rem;
-	color: #555;
+	font-size: 1.2rem;
+	color: #000000;
 }
 .challenge-card {
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -154,29 +154,44 @@ header .btn:hover {
 
 /* custoViagem */
 
-      #submit-btn {
-        background: #0d6efd;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        font-size: 14px;
-        cursor: pointer;
-        border-radius: 4px; 
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
+#submit-btn {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
       }
   
-      #submit-btn i {
-        font-size: 16px;
+#submit-btn i {
+  font-size: 16px;
       }
   
-      #submit-btn:hover {
-        background:#0056b3 ;
+#submit-btn:hover {
+  background:#0056b3 ;
+      }
+
+
+ #submit-btl {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
       }
   
-      #app {
+#app {
         display: flex;
         flex-direction: column;
         height: 100vh;
@@ -250,6 +265,8 @@ header .btn:hover {
         overflow: auto;
         padding: 1em;
         border-left: 2px solid #ddd;
+        width: 80%;
+        height: 600px;
       }
   
       #editor h3 {
@@ -266,21 +283,21 @@ header .btn:hover {
         word-wrap: break-word;
       }
   
-      .editor-block[data-type="start"],
-      .editor-block[data-type="end"] {
-        background-color: #e9f5e9;
-        border-color: #4caf50;
-        font-weight: bold;
-        cursor: default;
+ .editor-block[data-type="start"],
+ .editor-block[data-type="end"] {
+   background-color: #e9f5e9;
+   border-color: #4caf50;
+   font-weight: bold;
+   cursor: default;
       }
   
-      .editor-block:hover {
-        border-color: #555;
+ .editor-block:hover {
+   border-color: #555;
       }
   
       
-      #modal h3 {
-        margin-top: 0;
+ #modal h3 {
+   margin-top: 0;
       }
   
 
@@ -309,18 +326,18 @@ header .btn:hover {
   z-index: 1001;
 }
 
-      #modal button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+#modal button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
       }
   
       #modal button:hover {
-        background: #45a049;
+        background: #0056b3;
       }
   
 .delete-modal {
@@ -388,5 +405,67 @@ header .btn:hover {
 .menu-modal .inicio .edit,
 .menu-modal .fim .edit {
   display: none;
+}
+
+#instructions{
+  font-size: 1.2rem;
+	color: #000000;
+}
+
+@keyframes blink {
+  0% { background-color: #ffcccc; } /* Vermelho claro */
+  50% { background-color: transparent; }
+  100% { background-color: #ffcccc; }
+}
+
+.blink {
+  animation: blink 1s linear 3; /* Pisca 3 vezes em 1 segundo */
+}
+
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  max-width: 90%;
+  margin-left: -125px;
+  background-color: #0d6efd;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 16px;
+  position: absolute; 
+  z-index: 1;
+  left: 50%;
+  top: 20px; 
+  font-size: 18px;
+  box-shadow: 0px 4px 8px rgba(216, 211, 211, 0.2);
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .toast {
+    font-size: 14px;
+    min-width: 200px;
+    padding: 12px;
+  }
 }
 

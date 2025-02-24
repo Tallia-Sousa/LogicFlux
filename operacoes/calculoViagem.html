@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.14.0/js/jsplumb.min.js"></script>
+
 </head>
+
+
 <body>
   <header class="introduz">
     <a href="/operacoes/variaveis.html" class="back-icon">
@@ -17,35 +22,59 @@
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
+
+    <button id="submit-btl">
+      <i class="bi bi-check-circle"></i>
+      Limpar Resposta
+    </button>
   </header>
 
   <div id="app">
     <div id="instructions">
       <h2>Desafio: Calcular o Custo Total da Viagem</h2>
-      <p>Este desafio tem como objetivo praticar a criação de fluxogramas que simulam algoritmos para resolver problemas reais.</p>
-      <p>O desafio é calcular o custo total de uma viagem com base nos seguintes fatores:</p>
+      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
+      <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
       <ul>
-        <li><strong>Preço do combustível:</strong> Informe o valor por litro.</li>
-        <li><strong>Quantidade de combustível necessária:</strong> Calcule com base na distância da viagem e no consumo do veículo.</li>
-        <li><strong>Custo adicional fixo:</strong> Insira um valor para custos extras, como pedágios ou alimentação.</li>
+        <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
+        <li><strong>Quantidade de combustível necessária:</strong> 40 litros</li>
+        <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
       </ul>
-      <p>Crie um fluxo no editor abaixo que receba essas informações, processe os dados e exiba o custo total da viagem.</p>
+      <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
+      <ol>
+        <li>Calcular o custo total do combustível.</li>
+        <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
+        <li>Mostrar a saída do custo total da viagem.</li>
+      </ol>
+
+     
     </div>
 
     <div id="main">
       <div id="palette">
         <h3>Blocos</h3>
-        <p>Clique duas vezes em um bloco para editar ou excluir.</p>
-        <div class="block" draggable="true" data-type="start">Início</div>
-        <div class="block" draggable="true" data-type="input">Entrada</div>
-        <div class="block" draggable="true" data-type="process">Processo</div>
-        <div class="block" draggable="true" data-type="output">Saída</div>
-        <div class="block" draggable="true" data-type="end">Fim</div>
+        <p>Arraste os blocos abaixo para o editor de fluxogramas.
+         Clique duas vezes em um bloco para editar ou excluir. Você também pode conectar os blocos para definir o fluxo do processo, organizando a sequência lógica das etapas.
+        </p>  
+        <div class="block" draggable="true" data-type="inicio">Início</div>
+        <div class="block" draggable="true" data-type="entrada">Entrada</div>
+        <div class="block" draggable="true" data-type="processo">Processo</div>
+        <div class="block" draggable="true" data-type="saída">Saída</div>
+        <div class="block" draggable="true" data-type="fim">Fim</div>
+
+        
+      </div>
+  
+      
+      <div id="editor">
+        <div id="toast" class="toast">
+          <span id="toast-message"></span>   
+       </div>
+        <h3>Editor de Fluxogramas</h3>
+
+       
       </div>
 
-      <div id="editor">
-        <h3>Editor de Fluxogramas</h3>
-      </div>
+    
     </div>
 
     <div id="menuModal" class="menu-modal">
@@ -58,13 +87,15 @@
     <div id="modal" class="modal">
       <h3>Configurar Bloco</h3>
       <form id="blockForm">
-        <label for="blockName">Nome do Bloco:</label>
-        <input type="text" id="blockName"><br><br>
+        <label for="blockType">Tipo do Bloco:</label>
+        <input type="text" id="blockType" disabled><br><br> <!-- Não editável -->
         <label for="blockExpression">Expressão:</label>
         <textarea id="blockExpression" rows="3"></textarea><br><br>
         <button type="button" id="saveBlock">Salvar</button>
       </form>
     </div>
+
+
 
     <div id="overlay" class="overlay"></div>
 
@@ -72,7 +103,14 @@
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
   </div>
+ 
+
 
   <script src="../js/editorcalculo.js"></script>
+  
+
+
+  
+
 </body>
 </html>
