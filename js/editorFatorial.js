@@ -487,6 +487,17 @@ window.onload = function () {
         }
     });
 
+
+    function showToast(message, colorToast) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        toast.style.background = colorToast;
+
+        setTimeout(function () {
+            toast.classList.remove('show');
+        }, 9000);
+    }
+
    
 
     document.getElementById('submit-btn').addEventListener('click', function () {
