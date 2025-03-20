@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio: Calcular Custo Total da Viagem</title>
+  <title>Desafio: Comparar Preços de Produtos em Duas Lojas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
@@ -12,10 +12,9 @@
 
 </head>
 
-
 <body>
   <header class="introduz">
-    <a href="/operacoes/variaveis.html" class="back-icon">
+    <a href="/estruturasDados/dados.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
     <button id="submit-btn">
@@ -31,44 +30,36 @@
 
   <div id="app">
     <div id="instructions">
-      <h2>Desafio: Calcular o Custo Total da Viagem</h2>
-      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
-      <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
+      <h2>Desafio: Comparar Preços de Produtos em Duas Lojas</h2>
+      <p>Este desafio é focado em praticar a lógica de programação através de fluxogramas. Imagine que você está comparando preços de produtos entre duas lojas para encontrar a melhor opção de compra. As informações que você tem são as seguintes:</p>
       <ul>
-        <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
-        <li><strong>Quantidade de combustível necessária:</strong> 40 litros</li>
-        <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
+        <li><strong>Preços na Loja A:</strong> [10,30, 12]</li>
+        <li><strong>Preços na Loja B:</strong> [9, 16, 8]</li>
       </ul>
-      <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
+      <p>Seu objetivo é criar um fluxograma que faça o seguinte:</p>
       <ol>
-        <li>Calcular o custo total do combustível.</li>
-        <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
-        <li>Mostrar a saída do custo total da viagem.</li>
+        <li>Receber as listas de preços dos produtos na Loja A e na Loja B.</li>
+        <li>Unir as listas para visualizar todos os preços de ambos os locais.</li>
+        <li>Exibir a saída com a lista combinada.</li>
       </ol>
-
-     
+      <p>Utilize o editor de fluxogramas para organizar o processo passo a passo.</p>
     </div>
 
     <div id="main">
       <div id="palette">
         <h3>Blocos</h3>
-        <p>Arraste os blocos abaixo para o editor de fluxogramas.
-         Clique duas vezes em um bloco para editar ou excluir. Você também pode conectar os blocos para definir o fluxo do processo, organizando a sequência lógica das etapas.
-        </p>  
+        <p>Arraste os blocos abaixo para o editor de fluxogramas. Clique duas vezes em um bloco para editar ou excluir. Você pode conectar os blocos para definir o fluxo do processo e organizar a sequência lógica das etapas.</p>  
         <div class="block" draggable="true" data-type="inicio">Início</div>
         <div class="block" draggable="true" data-type="entrada">Entrada</div>
-        <div class="block" draggable="true" data-type="processo">Processo</div>
-        <div class="block" draggable="true" data-type="saída">Saída</div>
+        <div class="block" draggable="true" data-type="processo">Processo</div> 
+        <div class="block" draggable="true" data-type="saida">Saída</div>
         <div class="block" draggable="true" data-type="fim">Fim</div>
-
-        
       </div>
   
-      
       <div id="editor">
         <div id="toast" class="toast">
           <span id="toast-message"></span>   
-       </div>
+        </div>
         <h3>Editor de Fluxogramas</h3>
 
         <div id="menuModal" class="menu-modal">
@@ -88,16 +79,8 @@
             <button type="button" id="saveBlock">Salvar</button>
           </form>
         </div>
-    
-    
-
-       
       </div>
-
-    
     </div>
-
-    
 
     <div id="overlay" class="overlay"></div>
 
@@ -105,14 +88,8 @@
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
   </div>
- 
 
-
-  <script src="../js/editorcalculo.js"></script>
-  
-
-
-  
+  <script src="../js/listaCon.js"></script>
 
 </body>
 </html>

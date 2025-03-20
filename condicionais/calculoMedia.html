@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio: Calcular Custo Total da Viagem</title>
+  <title>Desafio: Calcular Média e Verificar Aprovação</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.14.0/js/jsplumb.min.js"></script>
-
 </head>
-
 
 <body>
   <header class="introduz">
-    <a href="/operacoes/variaveis.html" class="back-icon">
+    <a href="/condicionais/condicoes.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
     <button id="submit-btn">
@@ -31,22 +29,21 @@
 
   <div id="app">
     <div id="instructions">
-      <h2>Desafio: Calcular o Custo Total da Viagem</h2>
+      <h2>Desafio: Calcular Média e Verificar Aprovação</h2>
       <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
-      <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
+      <p>Imagine que você precisa calcular a média de duas notas de um aluno e verificar se ele foi aprovado. Considere as seguintes informações:</p>
       <ul>
-        <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
-        <li><strong>Quantidade de combustível necessária:</strong> 40 litros</li>
-        <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
+        <li><strong>Nota 1:</strong> 7.9 </li>
+        <li><strong>Nota 2:</strong> 8.4 </li>
+        <li><strong>Média necessária para aprovação:</strong> 6.0</li>
       </ul>
       <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
       <ol>
-        <li>Calcular o custo total do combustível.</li>
-        <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
-        <li>Mostrar a saída do custo total da viagem.</li>
+        <li>Receber as duas notas.</li>
+        <li>Calcular a média das notas.</li>
+        <li>Verificar se a média é maior ou igual a 6.0.</li>
+        <li>Mostrar a saída informando se o aluno foi "Aprovado" ou "Reprovado".</li>
       </ol>
-
-     
     </div>
 
     <div id="main">
@@ -58,13 +55,11 @@
         <div class="block" draggable="true" data-type="inicio">Início</div>
         <div class="block" draggable="true" data-type="entrada">Entrada</div>
         <div class="block" draggable="true" data-type="processo">Processo</div>
+        <div class="block" draggable="true" data-type="decisao">Decisão</div>
         <div class="block" draggable="true" data-type="saída">Saída</div>
         <div class="block" draggable="true" data-type="fim">Fim</div>
-
-        
       </div>
-  
-      
+
       <div id="editor">
         <div id="toast" class="toast">
           <span id="toast-message"></span>   
@@ -77,7 +72,7 @@
             <li id="deleteOption">Excluir</li>
           </ul>
         </div>
-    
+      
         <div id="modal" class="modal">
           <h3>Configurar Bloco</h3>
           <form id="blockForm">
@@ -88,16 +83,27 @@
             <button type="button" id="saveBlock">Salvar</button>
           </form>
         </div>
-    
-    
-
-       
+        
       </div>
-
-    
     </div>
 
-    
+    <div id="menuModal" class="menu-modal">
+      <ul>
+        <li id="editOption">Editar</li>
+        <li id="deleteOption">Excluir</li>
+      </ul>
+    </div>
+
+    <div id="modal" class="modal">
+      <h3>Configurar Bloco</h3>
+      <form id="blockForm">
+        <label for="blockType">Tipo do Bloco:</label>
+        <input type="text" id="blockType" disabled><br><br> 
+        <label for="blockExpression">Expressão:</label>
+        <textarea id="blockExpression" rows="3"></textarea><br><br>
+        <button type="button" id="saveBlock">Salvar</button>
+      </form>
+    </div>
 
     <div id="overlay" class="overlay"></div>
 
@@ -105,14 +111,7 @@
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
   </div>
- 
 
-
-  <script src="../js/editorcalculo.js"></script>
-  
-
-
-  
-
+  <script src="../js/editormedia.js"></script>
 </body>
 </html>

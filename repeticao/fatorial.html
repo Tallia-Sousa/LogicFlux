@@ -3,26 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio: Calcular Custo Total da Viagem</title>
+  <title>Desafio: Calcular o Fatorial de 120</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.14.0/js/jsplumb.min.js"></script>
-
 </head>
-
 
 <body>
   <header class="introduz">
-    <a href="/operacoes/variaveis.html" class="back-icon">
+    <a href="/estruturasDados/dados.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
-
     <button id="submit-btl">
       <i class="bi bi-check-circle"></i>
       Limpar Resposta
@@ -31,44 +27,42 @@
 
   <div id="app">
     <div id="instructions">
-      <h2>Desafio: Calcular o Custo Total da Viagem</h2>
-      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
-      <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
+      <h2>Desafio: Calcular o Fatorial de 120</h2>
+      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é estruturar um fluxo que calcule o fatorial do número que resulta em 120, estimulando o raciocínio lógico para organizar as etapas corretamente.</p>
+      
+      <p>Considere as seguintes informações:</p>
       <ul>
-        <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
-        <li><strong>Quantidade de combustível necessária:</strong> 40 litros</li>
-        <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
+        <li><strong>Número inicial:</strong> 5</li>
+        <li><strong>Variável de controle:</strong> <code>num</code> (inicia em 5)</li>
+        <li><strong>Variável do resultado:</strong> <code>fatorial</code> (inicia em 1)</li>
       </ul>
-      <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
+      
+      <p>Utilize o editor de fluxogramas para estruturar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
       <ol>
-        <li>Calcular o custo total do combustível.</li>
-        <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
-        <li>Mostrar a saída do custo total da viagem.</li>
+        <li>Inicializar as variáveis <code>num</code> e <code>fatorial</code>.</li>
+        <li>Verificar se <code>num</code> é maior que 1.</li>
+        <li>Se for verdadeiro, multiplicar <code>fatorial</code> por <code>num</code> e decrementar <code>num</code> em 1.</li>
+        <li>Repetir o processo até que <code>num</code> seja igual a 1.</li>
+        <li>Exibir o valor final de <code>fatorial</code>.</li>
       </ol>
-
-     
     </div>
 
     <div id="main">
       <div id="palette">
         <h3>Blocos</h3>
-        <p>Arraste os blocos abaixo para o editor de fluxogramas.
-         Clique duas vezes em um bloco para editar ou excluir. Você também pode conectar os blocos para definir o fluxo do processo, organizando a sequência lógica das etapas.
-        </p>  
+        <p>Arraste os blocos abaixo para o editor de fluxogramas. Clique duas vezes em um bloco para editar ou excluir. Você pode conectar os blocos para definir o fluxo do processo e organizar a sequência lógica das etapas.</p>
         <div class="block" draggable="true" data-type="inicio">Início</div>
         <div class="block" draggable="true" data-type="entrada">Entrada</div>
-        <div class="block" draggable="true" data-type="processo">Processo</div>
-        <div class="block" draggable="true" data-type="saída">Saída</div>
+        <div class="block" draggable="true" data-type="decisao">Decisão</div>
+        <div class="block" draggable="true" data-type="processo">Processo</div> 
+        <div class="block" draggable="true" data-type="saida">Saída</div>
         <div class="block" draggable="true" data-type="fim">Fim</div>
-
-        
       </div>
   
-      
       <div id="editor">
         <div id="toast" class="toast">
           <span id="toast-message"></span>   
-       </div>
+        </div>
         <h3>Editor de Fluxogramas</h3>
 
         <div id="menuModal" class="menu-modal">
@@ -88,16 +82,8 @@
             <button type="button" id="saveBlock">Salvar</button>
           </form>
         </div>
-    
-    
-
-       
       </div>
-
-    
     </div>
-
-    
 
     <div id="overlay" class="overlay"></div>
 
@@ -105,14 +91,7 @@
       © 2024 - Ferramenta de Treinamento de Lógica de Programação
     </footer>
   </div>
- 
 
-
-  <script src="../js/editorcalculo.js"></script>
-  
-
-
-  
-
+  <script src="../js/editorFatorial.js"></script>
 </body>
 </html>
