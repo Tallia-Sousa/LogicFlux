@@ -179,11 +179,28 @@ instance.bind("connectionDetached", function (info) {
         }
 
         instance.bind("connection", function (info) {
+           
             info.connection.setPaintStyle({
-                stroke: "black",
-                strokeWidth: 2
+                stroke: "#808080",
+                strokeWidth: 5 
             });
+
+            
+            info.connection.setConnector(["Flowchart", {
+                gap: 5, 
+                cornerRadius: 0 
+            }]);
+
+          
+            info.connection.addOverlay([
+                "Arrow", { width: 15, length: 15, location: 1 }
+            ]);
+
+         
+            info.connection.revalidate();
         });
+
+            
     }
 
     newBlock.addEventListener('dblclick', function () {
@@ -307,20 +324,20 @@ instance.bind("connectionDetached", function (info) {
     
     jsPlumb.ready(function () {
         instance = jsPlumb.getInstance({
-            Connector: ["Straight"],
+            Connector: ["Flowchart"],
             PaintStyle: {
-                stroke: "black",
-                strokeWidth: 3,
+                stroke: "#808080",
+                strokeWidth: 5,
                 outlineStroke: "white",
                 outlineWidth: 1
             },
             EndpointStyle: {
                 radius: 5,
-                fill: "gray"
+                fill: "#808080"
             },
             Anchor: "AutoDefault",
             ConnectionOverlays: [
-                ["Arrow", { location: 1, width: 10, length: 10 }]
+                ["Arrow", { width: 15, length: 15, location: 1  }]
             ]
         });
 
@@ -358,8 +375,8 @@ instance.bind("connectionDetached", function (info) {
                                     target: targetBlock,
                                     anchors: ["Bottom", "Top"],
                                     endpoints: ["Dot", "Dot"],
-                                    connector: ["Straight"],
-                                    paintStyle: { stroke: "black", strokeWidth: 2 },
+                                    connector: ["Flowchart"],
+                                    paintStyle: { stroke: "#808080", strokeWidth: 5 },
                                     detachable: false
                                 });
                             }
@@ -370,8 +387,8 @@ instance.bind("connectionDetached", function (info) {
                                 target: targetBlock,
                                 anchors: ["Bottom", "Top"],
                                 endpoints: ["Dot", "Dot"],
-                                connector: ["Straight"],
-                                paintStyle: { stroke: "black", strokeWidth: 2 },
+                                connector: ["Flowchart"],
+                                paintStyle: { stroke: "#808080", strokeWidth: 5 },
                                 detachable: false
                             });
                         }
@@ -433,12 +450,11 @@ instance.bind("connectionDetached", function (info) {
         toastMessage.textContent = message;
         toast.classList.add('show');
         toast.style.background = colorToast;
-
-        setTimeout(function () {
+    
+        setTimeout(function() {
             toast.classList.remove('show');
-        }, 9000);
+        },  30000);
     }
-
     document.getElementById('submit-btn').addEventListener('click', function () {
         submitBtl.style.display = 'none';
         if (!instance) {
@@ -456,9 +472,10 @@ instance.bind("connectionDetached", function (info) {
         const blocks = {};
         const executionOrder = [];
         let foundEnd = false;
-        let variables = { nota1: 7.9, nota2: 8.4 }; 
+        let variables = {}; 
+        let notas = []; 
     
-       
+        // Mapeia os blocos
         blocksInEditor.forEach(block => {
             blocks[block.id] = {
                 type: block.getAttribute('data-type').toLowerCase(),
@@ -468,7 +485,7 @@ instance.bind("connectionDetached", function (info) {
             };
         });
     
-      
+        // Mapeia as conexões
         connections.forEach(conn => {
             if (blocks[conn.source.id] && blocks[conn.target.id]) {
                 blocks[conn.source.id].outputs.push(conn.target.id);
@@ -476,6 +493,7 @@ instance.bind("connectionDetached", function (info) {
             }
         });
     
+        // Verifica se há um bloco de início
         let startBlocks = Object.keys(blocks).filter(id => blocks[id].type === 'inicio');
         if (startBlocks.length === 0) {
             showToast("Fluxo inválido: Não possui um bloco de início para iniciar o processo.", "#f44336");
@@ -485,6 +503,7 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
+        // Verifica se há um bloco de fim
         let endBlocks = Object.keys(blocks).filter(id => blocks[id].type === 'fim');
         if (endBlocks.length === 0) {
             showToast("Fluxo inválido: Não possui um bloco de fim para terminar o processo.", "#f44336");
@@ -494,6 +513,7 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
+        // Verifica se há blocos desconectados
         let disconnectedBlocks = [];
         for (let blockId in blocks) {
             const block = blocks[blockId];
@@ -528,37 +548,7 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
-       
-        const condicaoMedia = Object.keys(blocks).find(id => blocks[id].type === 'decisao' && blocks[id].expression.includes('media'));
-        const aprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim() === "Aprovado");
-        const reprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim() === "Reprovado");
-    
-        if (condicaoMedia && aprovadoBlock && reprovadoBlock) {
-            let isValid = true;
-    
-            connections.forEach(conn => {
-                const label = conn.endpoints[0].getParameter("label");
-                const source = conn.sourceId;
-                const target = conn.targetId;
-    
-                if (source === condicaoMedia) {
-                    if (label === "Sim" && target !== aprovadoBlock) {
-                        showToast("Erro: O fluxo 'Sim' deveria levar para 'Aprovado'.", "#dc3545");
-                        isValid = false;
-                    }
-                    if (label === "Não" && target !== reprovadoBlock) {
-                        showToast("Erro: O fluxo 'Não' deveria levar para 'Reprovado'.", "#dc3545");
-                        isValid = false;
-                    }
-                }
-            });
-    
-            if (!isValid) {
-                return; 
-            }
-        }
-    
-        
+        // Executa o fluxo
         let visited = new Set();
         let current = startBlocks[0]; 
         while (current) {
@@ -575,7 +565,7 @@ instance.bind("connectionDetached", function (info) {
             executionOrder.push(current);
             let block = blocks[current];
     
-            
+            // Processa o bloco de entrada
             if (block.type.startsWith('entrada')) {
                 let [varName, value] = block.expression.split('=');
                 if (!varName || !value) {
@@ -583,24 +573,61 @@ instance.bind("connectionDetached", function (info) {
                     return;
                 }
     
-               
-                const varNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
-                if (!varNameRegex.test(varName.trim())) {
-                    showToast(`Erro no bloco de entrada: nome de variável inválido "${varName.trim()}". O nome deve começar com uma letra ou sublinhado e pode conter letras, números e sublinhados.`, "#f44336");
+                varName = varName.trim();
+                value = value.trim();
+    
+                if (varName.includes(' ')) {
+                    showToast(`Erro no bloco de entrada: nome de variável "${varName}" não pode conter espaços, defina sempre junto ou use "_".`, "#f44336");
                     return;
                 }
     
-                variables[varName.trim()] = parseFloat(value.trim());
+                if (value.includes(',')) {
+                    showToast(`Erro no bloco de entrada: valor "${value}" não pode conter vírgulas, use ".".`, "#f44336");
+                    return;
+                }
+    
+                if (varName in variables) {
+                    showToast(`Erro no bloco de entrada: a variável "${varName}" já foi definida.`, "#f44336");
+                    return;
+                }
+    
+                const nota = parseFloat(value);
+                if (isNaN(nota)) {
+                    showToast(`Erro no bloco de entrada: valor inválido "${value}"`, "#f44336");
+                    return;
+                }
+    
+                notas.push(nota); 
+                variables[varName] = nota; 
             }
-            
+    
+            // Processa o bloco de processo
             else if (block.type.startsWith('processo')) {
                 let [varName, expression] = block.expression.split('=');
                 if (!varName || !expression) {
                     showToast(`Erro no bloco de processo: expressão inválida "${block.expression}"`, "#f44336");
                     return;
                 }
+    
                 varName = varName.trim();
-                let usedVars = expression.match(/[a-zA-Z_][a-zA-Z0-9_]*/g); 
+                expression = expression.trim();
+    
+                if (varName.includes(' ')) {
+                    showToast(`Erro no bloco de processo: nome de variável "${varName}" não pode conter espaços.`, "#f44336");
+                    return;
+                }
+    
+                if (expression.includes(',')) {
+                    showToast(`Erro no bloco de processo: expressão "${expression}" não pode conter vírgulas.`, "#f44336");
+                    return;
+                }
+    
+                if (varName in variables) {
+                    showToast(`Erro no bloco de processo: a variável "${varName}" já foi definida.`, "#f44336");
+                    return;
+                }
+    
+                let usedVars = expression.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
                 if (usedVars) {
                     for (let v of usedVars) {
                         if (!(v in variables)) {
@@ -609,42 +636,80 @@ instance.bind("connectionDetached", function (info) {
                         }
                     }
                 }
-                let evalExpression = expression.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => `variables['${match}']`);
+    
+                let evalExpression = expression.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => {
+                    if (variables[match] !== undefined) {
+                        return variables[match];
+                    } else {
+                        showToast(`Erro: Variável "${match}" usada em "${expression}" não foi definida.`, "#f44336");
+                        throw new Error("Variável não definida");
+                    }
+                });
+    
                 try {
-                    variables[varName] = new Function('variables', `return ${evalExpression};`)(variables);
+                    variables[varName] = eval(evalExpression);
                 } catch (error) {
                     showToast(`Erro na expressão: "${block.expression}"`, "#f44336");
                     return;
                 }
             }
-         
+    
+            // Processa o bloco de decisão
             else if (block.type.startsWith('decisao')) {
                 let condition = block.expression.trim();
-                let usedVars = condition.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
-                if (usedVars) {
-                    for (let v of usedVars) {
-                        if (!(v in variables)) {
-                            showToast(`Erro: Variável "${v}" usada em "${condition}" não foi definida.`, "#f44336");
-                            return;
-                        }
-                    }
-                }
-                let evalCondition = condition.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => `variables['${match}']`);
-                try {
-                    let result = new Function('variables', `return ${evalCondition};`)(variables);
     
-                   
+                if (!condition) {
+                    showToast(`Erro no bloco de decisão: expressão inválida "${block.expression}"`, "#f44336");
+                    return;
+                }
+    
+                if (condition.includes(',')) {
+                    showToast(`Erro no bloco de decisão: condição "${condition}" não pode conter vírgulas, use "."`, "#f44336");
+                    return;
+                }
+    
+                let evalCondition = condition.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => {
+                    if (variables[match] !== undefined) {
+                        return variables[match];
+                    } else {
+                        showToast(`Erro: Variável "${match}" usada em "${condition}" não foi definida.`, "#f44336");
+                        throw new Error("Variável não definida");
+                    }
+                });
+    
+                try {
+                    let result = eval(evalCondition);
+    
                     const connections = instance.getConnections({ source: current });
                     let nextBlockId = null;
+                    let isValid = true;
+    
                     connections.forEach(conn => {
                         const sourceEndpoint = conn.endpoints[0];
                         const label = sourceEndpoint.getParameter("label");
+                        const targetBlock = blocks[conn.targetId];
+    
+                        // Normaliza a expressão do bloco de saída para minúsculas
+                        const targetExpression = targetBlock.expression.trim().toLowerCase();
+    
                         if (result && label === "Sim") {
+                            if (targetBlock.type !== 'saída' || targetExpression !== "aprovado") {
+                                showToast("Erro: O fluxo 'Sim' deve levar para o bloco 'Aprovado'.", "#dc3545");
+                                isValid = false;
+                            }
                             nextBlockId = conn.targetId;
                         } else if (!result && label === "Não") {
+                            if (targetBlock.type !== 'saída' || targetExpression !== "reprovado") {
+                                showToast("Erro: O fluxo 'Não' deve levar para o bloco 'Reprovado'.", "#dc3545");
+                                isValid = false;
+                            }
                             nextBlockId = conn.targetId;
                         }
                     });
+    
+                    if (!isValid) {
+                        return; 
+                    }
     
                     if (!nextBlockId) {
                         showToast(`Erro: O bloco de decisão não está conectado corretamente.`, "#f44336");
@@ -657,15 +722,8 @@ instance.bind("connectionDetached", function (info) {
                     return;
                 }
             }
-            
-            else if (block.type.startsWith('saída')) {
-                let outputText = block.expression.trim();
-                if (outputText !== "Aprovado" && outputText !== "Reprovado") {
-                    showToast(`Erro: O bloco de saída deve conter "Aprovado" ou "Reprovado".`, "#f44336");
-                    return;
-                }
-            }
-           
+    
+            // Verifica se chegou ao fim
             if (block.type === 'fim') {
                 foundEnd = true;
                 break;
@@ -673,27 +731,44 @@ instance.bind("connectionDetached", function (info) {
             current = block.outputs[0];
         }
     
-       
         if (!foundEnd) {
             showToast("Erro: O fluxo não alcança um bloco 'Fim'. Verifique as conexões.", "#f44336");
             return;
         }
     
-      
-        if (blocks[aprovadoBlock].outputs[0] !== endBlocks[0] || blocks[reprovadoBlock].outputs[0] !== endBlocks[0]) {
-            showToast("Erro: Os blocos de saída 'Aprovado' e 'Reprovado' devem estar conectados ao bloco de fim.", "#f44336");
+        // Verifica se há exatamente duas notas
+        if (notas.length !== 2) {
+            showToast("Erro: É necessário definir exatamente duas notas nos blocos de entrada.", "#f44336");
             return;
         }
     
-        
-        let media = variables['media']; 
-        let resultadoEsperado = media >= 6.0 ? "Aprovado" : "Reprovado";
+        // Calcula a média esperada
+        const mediaEsperada = (notas[0] + notas[1]) / 2;
+    
+        // Verifica se a média foi calculada corretamente
+        let mediaCalculada = null;
+        for (let varName in variables) {
+            if (variables[varName] === mediaEsperada) {
+                mediaCalculada = variables[varName];
+                break;
+            }
+        }
+    
+        if (mediaCalculada === null) {
+            showToast("Erro: Nenhuma operação de média foi detectada no fluxo.", "#f44336");
+            return;
+        }
+    
+        // Verifica o resultado do usuário
+        const aprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim().toLowerCase() === "aprovado");
+        const reprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim().toLowerCase() === "reprovado");
+    
         let resultadoUsuario = blocks[aprovadoBlock].outputs.length > 0 ? "Aprovado" : "Reprovado";
     
-        if (resultadoEsperado === resultadoUsuario) {
-            showToast(`Fluxo correto! Resultado: ${resultadoEsperado}`, "#0d6efd");
-    
-            
+        if (mediaCalculada >= 6.0 && resultadoUsuario.toLowerCase() === "aprovado") {
+            showToast(`Fluxo correto! Resultado: Aprovado`, "#0d6efd");
+        
+            // Salva o fluxo no localStorage
             const blocksToSave = [];
             const connectionsToSave = [];
             document.querySelectorAll('.block').forEach(block => {
@@ -707,6 +782,7 @@ instance.bind("connectionDetached", function (info) {
                     });
                 }
             });
+        
             instance.getConnections().forEach(conn => {
                 if (conn.sourceId && conn.targetId) {
                     const sourceEndpoint = conn.endpoints[0];
@@ -714,19 +790,53 @@ instance.bind("connectionDetached", function (info) {
                     connectionsToSave.push({
                         sourceId: conn.sourceId,
                         targetId: conn.targetId,
-                        label: label 
+                        label: label || ""
                     });
                 }
             });
-            showToast("Seu fluxo está correto", "#0d6efd");
+        
             localStorage.setItem('savedFlowMedia', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
-    
+        
             submitBtn.style.display = 'none';
             submitBtl.style.display = 'block';
             location.reload();
-    
+        } else if (mediaCalculada < 6.0 && resultadoUsuario.toLowerCase() === "reprovado") {
+            showToast(`Fluxo correto! Resultado: Reprovado`, "#0d6efd");
+        
+            // Salva o fluxo no localStorage
+            const blocksToSave = [];
+            const connectionsToSave = [];
+            document.querySelectorAll('.block').forEach(block => {
+                if (block.id && block.getAttribute('data-type') && block.style.left && block.style.top) {
+                    blocksToSave.push({
+                        id: block.id,
+                        type: block.getAttribute('data-type'),
+                        expression: block.getAttribute('data-expression') || "",
+                        x: block.style.left,
+                        y: block.style.top
+                    });
+                }
+            });
+        
+            instance.getConnections().forEach(conn => {
+                if (conn.sourceId && conn.targetId) {
+                    const sourceEndpoint = conn.endpoints[0];
+                    const label = sourceEndpoint.getParameter("label");
+                    connectionsToSave.push({
+                        sourceId: conn.sourceId,
+                        targetId: conn.targetId,
+                        label: label || ""
+                    });
+                }
+            });
+        
+            localStorage.setItem('savedFlowMedia', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
+        
+            submitBtn.style.display = 'none';
+            submitBtl.style.display = 'block';
+            location.reload();
         } else {
-            showToast(`Erro: A média calculada é ${media}, mas o resultado informado foi "${resultadoUsuario}".`, "#f44336");
+            showToast(`Erro: A média calculada é ${mediaCalculada}, mas o resultado informado foi "${resultadoUsuario}".`, "#f44336");
         }
     });
     if (savedFlowMedia) {

@@ -209,22 +209,30 @@ window.onload = function () {
                 });
             }
 
-            // Estilo das conexões
             instance.bind("connection", function (info) {
+           
                 info.connection.setPaintStyle({
-                    stroke: "black",
-                    strokeWidth: 2
+                    stroke: "#808080",
+                    strokeWidth: 5 
                 });
-
-                info.connection.setConnector("Flowchart");
-
-                // setas
+    
+                
+                info.connection.setConnector(["Flowchart", {
+                    gap: 5, 
+                    cornerRadius: 0 
+                }]);
+    
+              
                 info.connection.addOverlay([
                     "Arrow", { width: 15, length: 15, location: 1 }
                 ]);
+    
+             
+                info.connection.revalidate();
+            });
 
                 
-            });
+           
         }
 
        
@@ -347,23 +355,25 @@ window.onload = function () {
     }
 
 
-
+   
+      
+     
     jsPlumb.ready(function () {
         instance = jsPlumb.getInstance({
-            Connector: ["Straight"],
+            Connector: ["Flowchart"],
             PaintStyle: {
-                stroke: "black",
-                strokeWidth: 3,
+                stroke: "#808080",
+                strokeWidth: 5,
                 outlineStroke: "white",
                 outlineWidth: 1
             },
             EndpointStyle: {
                 radius: 5,
-                fill: "gray"
+                fill: "#808080"
             },
             Anchor: "AutoDefault",
             ConnectionOverlays: [
-                ["Arrow", { location: 1, width: 10, length: 10 }]
+                ["Arrow", {  width: 15, length: 15, location: 1  }]
             ]
         });
     
@@ -432,8 +442,8 @@ window.onload = function () {
                         target: targetBlock,
                         anchors: [anchorSource, anchorTarget],
                         endpoints: ["Dot", "Dot"],
-                        connector: ["Straight"],
-                        paintStyle: { stroke: "black", strokeWidth: 2 },
+                        connector: ["Flowchart"],
+                        paintStyle: { stroke: "#808080", strokeWidth: 5 },
                         detachable: false,
                        
                     });
@@ -492,12 +502,11 @@ window.onload = function () {
         toastMessage.textContent = message;
         toast.classList.add('show');
         toast.style.background = colorToast;
-
-        setTimeout(function () {
+    
+        setTimeout(function() {
             toast.classList.remove('show');
-        }, 9000);
+        },  30000);
     }
-
    
 
     document.getElementById('submit-btn').addEventListener('click', function () {
@@ -603,29 +612,67 @@ window.onload = function () {
                 }
              
                 else if (block.type === 'entrada') {
+                
+                    if (!block.expression || block.expression.trim() === "") {
+                        showToast(`Erro no bloco de entrada: expressão vazia.`, "#f44336");
+                        return null;
+                    }
+                
                     let [varName, value] = block.expression.split('=');
                     if (!varName || !value) {
                         showToast(`Erro no bloco de entrada: expressão inválida "${block.expression}"`, "#f44336");
                         return null;
                     }
+                
                     varName = varName.trim();
                     value = parseFloat(value.trim());
-
+                
+                   
                     if (isNaN(value)) {
                         showToast(`Erro no bloco de entrada: valor inválido "${value}"`, "#f44336");
                         return null;
                     }
-
-                    variables[varName] = value; 
+                
+                    if (varName.includes(' ')) {
+                        showToast(`Erro: Nome de variável "${varName}" não pode conter espaços.`, "#f44336");
+                        return null;
+                    }
+                
+                 
+                    if (variables[varName] !== undefined) {
+                        showToast(`Erro: Variável "${varName}" já foi definida em outro bloco de entrada.`, "#f44336");
+                        return null;
+                    }
+                
+                  
+                    variables[varName] = value;
                 }
-             
+                 
                 else if (block.type === 'processo') {
+
+
+ 
+                    if (!block.expression || block.expression.trim() === "") {
+                    showToast(`Erro no bloco de processo: expressão vazia.`, "#f44336");
+                    return null;
+}
+
                     let [varName, expression] = block.expression.split('=');
+
+                  
+
                     if (!varName || !expression) {
                         showToast(`Erro no bloco de processo: expressão inválida "${block.expression}"`, "#f44336");
                         return null;
                     }
                     varName = varName.trim();
+                
+         
+                    if (varName.includes(' ')) {
+                        showToast(`Erro: Nome de variável "${varName}" não pode conter espaços.`, "#f44336");
+                        return null;
+                    }
+                
                     let usedVars = expression.match(/[a-zA-Z_]+/g);
                     if (usedVars) {
                         for (let v of usedVars) {
@@ -642,15 +689,28 @@ window.onload = function () {
                         showToast(`Erro na expressão: "${block.expression}"`, "#f44336");
                         return null;
                     }
-
-                    
+                
                     if (expression.includes('*')) { 
                         resultVariable = varName;
                     }
                 }
-                
+                    
                 else if (block.type === 'decisao') {
+
+                     
+                  if (!block.expression || block.expression.trim() === "") {
+                   showToast(`Erro no bloco de processo: expressão vazia.`, "#f44336");
+                return null;
+                  }
+
                     let condition = block.expression.trim();
+                
+                    if (!condition) {
+                        showToast(`Erro no bloco de decisão: expressão inválida "${block.expression}"`, "#f44336");
+                        return null;
+                    }
+                
+                  
                     let usedVars = condition.match(/[a-zA-Z_]+/g);
                     if (usedVars) {
                         for (let v of usedVars) {
@@ -660,58 +720,79 @@ window.onload = function () {
                             }
                         }
                     }
+                
+                   
                     let evalCondition = condition.replace(/([a-zA-Z_]+)/g, match => `variables['${match}']`);
                     try {
                         let result = new Function('variables', `return ${evalCondition};`)(variables);
-
-                       
+                
                         const connections = instance.getConnections({ source: current });
                         let nextBlockId = null;
+                        let loopBlockId = null;
+                
+                        // Verifica as conexões do bloco de decisão
                         connections.forEach(conn => {
                             const sourceEndpoint = conn.endpoints[0];
                             const label = sourceEndpoint.getParameter("label");
-
-                            if (result && label === "True") {
-                                
-                                nextBlockId = conn.targetId;
-                            } else if (!result && label === "False") {
-                               
+                
+                           
+                            if ((label === "Loop" || label === "True") && result) {
+                                loopBlockId = conn.targetId;
+                            }
+                            
+                            else if (label === "False" && !result) {
                                 nextBlockId = conn.targetId;
                             }
                         });
-
-                        if (!nextBlockId) {
-                            showToast(`Erro: O bloco de decisão não está conectado corretamente.`, "#f44336");
+                
+                        
+                        if (result && !loopBlockId) {
+                            showToast(`Erro: O bloco de decisão não está conectado à label "Loop" ou "True" para repetição.`, "#f44336");
                             return null;
                         }
-
-                        current = nextBlockId; 
-                        continue;
+                
+                      
+                        if (!result && !nextBlockId) {
+                            showToast(`Erro: O bloco de decisão não está conectado à label "False".`, "#f44336");
+                            return null;
+                        }
+                
+                       
+                        if (result) {
+                            current = loopBlockId; 
+                        } else {
+                            current = nextBlockId; 
+                        }
+                
+                        continue; 
                     } catch (error) {
                         showToast(`Erro na condição: "${block.expression}"`, "#f44336");
                         return null;
                     }
                 }
-                
                 else if (block.type === 'saida') {
+                    if (!block.expression || block.expression.trim() === "") {
+                        showToast(`Erro no bloco de saída: expressão vazia.`, "#f44336");
+                        return null;
+                    }
+                
                     let varName = block.expression.trim();
                     if (!varName || !(varName in variables)) {
                         showToast(`Erro: A variável de saída "${varName}" não foi definida.`, "#f44336");
                         return null;
                     }
-
+                
                     let outputValue = variables[varName];
                     showToast(`Resultado: ${varName} = ${outputValue}`, "#0d6efd");
                 }
-                
+                    
                 if (block.type === 'fim') {
                     break;
                 }
-
+                
                 current = block.outputs[0]; 
                 loopCount++; 
             }
-
             if (loopCount >= 1000) {
                 showToast("Erro: Loop infinito detectado no fluxo.", "#f44336");
                 return null;

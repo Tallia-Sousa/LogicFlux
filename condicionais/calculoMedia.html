@@ -16,16 +16,106 @@
     <a href="./condicoes.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
+  
+ 
+    <button id="help-btn">
+      <i class="bi bi-question-circle"></i>
+      Ajuda
+    </button>
+  
+  
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
-
+  
+    
     <button id="submit-btl">
-      <i class="bi bi-check-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Limpar Resposta
     </button>
   </header>
+
+ 
+
+<div id="help-card" class="help-card">
+  <div class="help-card-header">
+    <h3>Ajuda - Como Criar Fluxos</h3>
+    <button id="close-help-btn">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+  <div class="help-card-body">
+    <h4>Tipos de Blocos</h4>
+    <ul>
+      <li><strong>Início</strong>: Ponto de partida do fluxo.</li>
+      <li><strong>Entrada</strong>: Define variáveis e seus valores iniciais.</li>
+      <li><strong>Decisão</strong>: Verifica uma condição e direciona o fluxo para <strong>Sim</strong> ou <strong>Não</strong>.</li>
+      <li><strong>Processo</strong>: Realiza operações com as variáveis.</li>
+      <li><strong>Saída</strong>: Representa a referência de uma variável ou resultado.</li>
+      <li><strong>Fim</strong>: Ponto final do fluxo.</li>
+    </ul>
+
+    <h4>Como Criar um Fluxo</h4>
+    <ol>
+      <li>Arraste os blocos da paleta para o editor.</li>
+      <li>Conecte os blocos para definir a sequência lógica.</li>
+      <li>Clique duas vezes em um bloco para editar ou excluir.</li>
+      <li>Submeta o fluxo para verificar se está correto.</li>
+    </ol>
+
+    <h4>Objetivo do Desafio</h4>
+    <p>O objetivo é criar um fluxo que resolva o problema de calcular a média de duas notas e verificar se o aluno foi aprovado ou reprovado. Para isso, você deve:</p>
+    <ol>
+      <li>Definir as notas do aluno.</li>
+      <li>Calcular a média das notas.</li>
+      <li>Verificar se a média é maior ou igual a 6.0.</li>
+      <li>Representar o resultado final (Aprovado ou Reprovado).</li>
+    </ol>
+
+    <h4>Exemplos de Uso dos Blocos</h4>
+    <p>Aqui estão exemplos de como os blocos podem ser usados para representar o algoritmo:</p>
+
+    
+    <div class="example">
+      <h5>1. Definindo as Notas</h5>
+      <p>Use o bloco <strong>Entrada</strong> para definir as notas:</p>
+      <div class="block-example">
+        <div class="block" data-type="entrada">nota1 = 7.9</div>
+        <div class="block" data-type="entrada">nota2 = 8.4</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <h5>2. Calculando a Média</h5>
+      <p>Use o bloco <strong>Processo</strong> para calcular a média:</p>
+      <div class="block-example">
+        <div class="block" data-type="processo">media = (nota1 + nota2) / 2</div>
+      </div>
+    </div>
+
+  
+    <div class="example">
+      <h5>3. Verificando a Aprovação</h5>
+      <p>Use o bloco <strong>Decisão</strong> para verificar a condição:</p>
+      <div class="block-example">
+        <div class="block" data-type="decisao">media >= 6.0</div>
+      </div>
+      <p>Este bloco tem duas conexões: <strong>Sim</strong> (aprovado) e <strong>Não</strong> (reprovado).</p>
+    </div>
+
+ 
+    <div class="example">
+      <h5>4. Representando o Resultado</h5>
+      <p>Use o bloco <strong>Saída</strong> para representar o resultado final:</p>
+      <div class="block-example">
+        <div class="block" data-type="saída">Aprovado</div>
+        <div class="block" data-type="saída">Reprovado</div>
+      </div>
+      <p>Isso indica o caminho que o fluxo deve seguir com base na condição.</p>
+    </div>
+  </div>
+</div>
 
   <div id="app">
     <div id="instructions">
@@ -42,7 +132,7 @@
         <li>Receber as duas notas.</li>
         <li>Calcular a média das notas.</li>
         <li>Verificar se a média é maior ou igual a 6.0.</li>
-        <li>Mostrar a saída informando se o aluno foi "Aprovado" ou "Reprovado".</li>
+        <li>Representar a saída informando se o aluno foi "Aprovado" ou "Reprovado".</li>
       </ol>
     </div>
 
@@ -113,5 +203,6 @@
   </div>
 
   <script src="../js/editormedia.js"></script>
+  <script src="../js/ajuda.js"></script>
 </body>
 </html>

@@ -15,35 +15,132 @@
     <a href="./repeticoes.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
+  
+    
+    <button id="help-btn">
+      <i class="bi bi-question-circle"></i>
+      Ajuda
+    </button>
+  
+    
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
+  
+   
     <button id="submit-btl">
-      <i class="bi bi-check-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Limpar Resposta
     </button>
   </header>
 
-  <div id="app">
-    <div id="instructions">
-      <h2>Desafio: Calcular o Fatorial de 5</h2>
-      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é estruturar um fluxo que calcule o fatorial do número 5, cujo resultado é 120, estimulando o raciocínio lógico para organizar as etapas corretamente.</p>
-      
-      <p>Considere as seguintes informações:</p>
-    <ul>
-      <li><strong>Número inicial:</strong> 5</li>
-      <li><strong>Variável do resultado:</strong> fatorial (inicia em 1)</li>
-    </ul>
-    <p>Utilize o editor de fluxogramas para estruturar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
-    <ol>
-      <li>Inicializar as variáveis num e fatorial.</li>
-      <li>Verificar se num é maior que 1.</li>
-      <li>Se for verdadeiro, multiplicar fatorial por num e decrementar num em 1.</li>
-      <li>Repetir o processo até que num seja igual a 1.</li>
-      <li>Exibir o valor final de fatorial.</li>
-    </ol>
+
+
+
+
+  <div id="help-card" class="help-card">
+    <div class="help-card-header">
+      <h3>Ajuda - Como Criar Fluxos</h3>
+      <button id="close-help-btn">
+        <i class="bi bi-x"></i>
+      </button>
     </div>
+    <div class="help-card-body">
+      <h4>Tipos de Blocos</h4>
+      <ul>
+        <li><strong>Início</strong>: Ponto de partida do fluxo.</li>
+        <li><strong>Entrada</strong>: Define variáveis e seus valores iniciais.</li>
+        <li><strong>Decisão</strong>: Usado para representar condições.</li>
+        <li><strong>Processo</strong>: Realiza operações com as variáveis.</li>
+        <li><strong>Saída</strong>: Representa a referência de uma variável ou resultado.</li>
+        <li><strong>Fim</strong>: Ponto final do fluxo.</li>
+      </ul>
+  
+      <h4>Como Criar um Fluxo</h4>
+      <ol>
+        <li>Arraste os blocos da paleta para o editor.</li>
+        <li>Conecte os blocos para definir a sequência lógica.</li>
+        <li>Clique duas vezes em um bloco para editar ou excluir.</li>
+        <li>Submeta o fluxo para verificar se está correto.</li>
+      </ol>
+  
+      <h4>Exemplos de Uso dos Blocos</h4>
+      <p>Aqui estão exemplos de como os blocos podem ser usados para representar o algoritmo:</p>
+  
+      
+      <div class="example">
+        <h5>1. Definindo as Variáveis</h5>
+        <p>Use o bloco <strong>Entrada</strong> para definir as variáveis:</p>
+        <div class="block-example">
+          <div class="block" data-type="entrada">num = 5</div>
+          <div class="block" data-type="entrada">fatorial = 1</div>
+        </div>
+      </div>
+  
+      
+      <div class="example">
+        <h5>2. Representando Condições</h5>
+        <p>Use o bloco <strong>Decisão</strong> para representar condições:</p>
+        <div class="block-example">
+          <div class="block" data-type="decisao">num > 1</div>
+        </div>
+        <p>
+          Este bloco tem três conexões:
+          <ul>
+            <li><strong>True</strong>: Quando a condição é verdadeira, o fluxo continua para realizar operações.</li>
+            <li><strong>False</strong>: Quando a condição é falsa, o fluxo é direcionado para a <strong>Saída</strong> e encerra o processo.</li>
+            <li><strong>Loop</strong>: Representa um retorno ao bloco de decisão para verificar novamente a condição. Isso é útil para repetir o processo enquanto a condição for verdadeira.</li>
+          </ul>
+        </p>
+      </div>
+  
+     
+      <div class="example">
+        <h5>3. Realizando Operações</h5>
+        <p>Use o bloco <strong>Processo</strong> para realizar operações:</p>
+        <div class="block-example">
+          <div class="block" data-type="processo">fatorial = fatorial * num</div>
+          <div class="block" data-type="processo">num = num - 1</div>
+        </div>
+        <p>Após realizar as operações, o fluxo pode retornar ao bloco de <strong>Decisão</strong> (via <strong>Loop</strong>) para verificar se a condição ainda é verdadeira.</p>
+      </div>
+  
+      
+      <div class="example">
+        <h5>4. Representando a Saída de uma Variável</h5>
+        <p>Use o bloco <strong>Saída</strong> para representar a referência de uma variável que contém um valor ou resultado:</p>
+        <div class="block-example">
+          <div class="block" data-type="saída">fatorial</div>
+        </div>
+        <p>Quando a condição no bloco de <strong>Decisão</strong> for falsa, o fluxo é direcionado para a <strong>Saída</strong>, indicando o fim do processo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="instructions">
+    <h2>Desafio: Calcular o Fatorial de 5</h2>
+    <p>
+        Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema matemático, estimulando o raciocínio lógico para estruturar uma solução passo a passo.
+    </p>
+    <p>
+        Imagine que você precisa calcular o fatorial do número 5, que é o produto de todos os números inteiros positivos de 1 até 5. Para isso, considere as seguintes informações:
+    </p>
+    <ul>
+        <li><strong>Número inicial:</strong> 5</li>
+        <li><strong>Variável do resultado (fatorial):</strong> Inicia em 1</li>
+    </ul>
+    <p>
+        Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:
+    </p>
+    <ol>
+        <li>Inicializar as variáveis num e fatorial.</li>
+        <li>Verificar se num é maior que 1.</li>
+        <li>Se for verdadeiro, multiplicar fatorial por num e decrementar num em 1.</li>
+        <li>Repetir o processo até que num seja igual a 1.</li>
+        <li>Representar a saída do valor final de fatorial.</li>
+    </ol>
+</div>
 
     <div id="main">
       <div id="palette">
@@ -91,5 +188,6 @@
   </div>
 
   <script src="../js/editorFatorial.js"></script>
+  <script src="../js/ajuda.js"></script>
 </body>
 </html>

@@ -67,25 +67,27 @@ function createBlockInEditor(blockId, x, y, expression = "", originalId = null) 
         }
 
         instance.bind("connection", function (info) {
+           
             info.connection.setPaintStyle({
-                stroke: "black",
-                strokeWidth: 2
+                stroke: "#808080",
+                strokeWidth: 5 
             });
 
+            
+            info.connection.setConnector(["Flowchart", {
+                gap: 5, 
+                cornerRadius: 0 
+            }]);
 
-            // info.connection.setConnector(["Flowchart", {
-            //     stub: 10,               
-            //     gap: 5,                 
-            //     cornerRadius: 0,        
-            //     alwaysRespectStubs: true 
-            // }]);
-        
-            // info.connection.addOverlay([
-            //     "Arrow", { width: 15, length: 15, location: 1 }
-            // ]);
+          
+            info.connection.addOverlay([
+                "Arrow", { width: 15, length: 15, location: 1 }
+            ]);
+
+         
+            info.connection.revalidate();
         });
     }
-
     newBlock.addEventListener('dblclick', function () {
         if (!savedFlow) {
             showMenuModal(newBlock);
@@ -94,7 +96,6 @@ function createBlockInEditor(blockId, x, y, expression = "", originalId = null) 
 
     return newBlock;
 }
-
     function showMenuModal(block) {
         const menuModal = document.getElementById('menuModal');
         const editor = document.getElementById('editor');
@@ -109,8 +110,6 @@ function createBlockInEditor(blockId, x, y, expression = "", originalId = null) 
         
         const offsetX = 10;
         const verticalCenter = menuRect.top + (menuRect.height / 2) - (menuHeight / 2);
-    
-       
         menuModal.style.left = `${menuRect.right - editorRect.left + offsetX}px`;
         menuModal.style.top = `${verticalCenter - editorRect.top}px`;
         menuModal.style.display = 'block';
@@ -204,17 +203,14 @@ function createBlockInEditor(blockId, x, y, expression = "", originalId = null) 
         };
     }
     
-    
-    
-
     jsPlumb.ready(function () {
         instance = jsPlumb.getInstance({
-            Connector: ["Straight"],
-            PaintStyle: { stroke: "black", strokeWidth: 2 },
-            EndpointStyle: { radius: 5, fill: "gray" },
+            Connector: ["Flowchart"],
+            PaintStyle: { stroke: "#808080", strokeWidth: 5 },
+            EndpointStyle: { radius: 5, fill: "#808080" },
             Anchor: "AutoDefault",
             ConnectionOverlays: [
-                ["Arrow", { location: 1, width: 10, length: 10 }]
+                ["Arrow", { width: 15, length: 15, location: 1  }]
             ]
         });
 
@@ -248,8 +244,8 @@ if (savedFlow) {
                     target: targetBlock,
                     anchors: ["Bottom", "Top"],
                     endpoints: ["Dot", "Dot"],
-                    connector: ["Straight"],
-                    paintStyle: { stroke: "black", strokeWidth: 2 },
+                    connector: ["Flowchart"],
+                    paintStyle: { stroke: "#808080", strokeWidth: 5 },
                     detachable: false
                 });
             }
@@ -308,8 +304,9 @@ editor.addEventListener('drop', function (e) {
     });
 
 
+   
+
     document.getElementById('submit-btn').addEventListener('click', function () {
-        
         submitBtl.style.display = 'none';
     
         
@@ -318,20 +315,21 @@ editor.addEventListener('drop', function (e) {
             return;
         }
     
-       
+        
         const blocksInEditor = document.querySelectorAll('#editor .block');
         if (blocksInEditor.length === 0) {
             showToast("Erro: Não há blocos no editor.", "#f44336");
             return;
         }
     
-       
+        
         const connections = instance.getConnections();
         const blocks = {};
         const executionOrder = [];
         let foundEnd = false;
         let variables = {};
-
+    
+        
         blocksInEditor.forEach(block => {
             blocks[block.id] = {
                 type: block.getAttribute('data-type').toLowerCase(),
@@ -349,7 +347,7 @@ editor.addEventListener('drop', function (e) {
             }
         });
     
-    
+        
         let startBlocks = Object.keys(blocks).filter(id => blocks[id].type === 'inicio');
         if (startBlocks.length === 0) {
             showToast("Fluxo inválido: Não possui um bloco de início para iniciar o processo.", "#f44336");
@@ -359,7 +357,7 @@ editor.addEventListener('drop', function (e) {
             return;
         }
     
-      
+        
         let endBlocks = Object.keys(blocks).filter(id => blocks[id].type === 'fim');
         if (endBlocks.length === 0) {
             showToast("Fluxo inválido: Não possui um bloco de fim para terminar o processo.", "#f44336");
@@ -369,7 +367,7 @@ editor.addEventListener('drop', function (e) {
             return;
         }
     
-       
+        
         let disconnectedBlocks = [];
         for (let blockId in blocks) {
             const block = blocks[blockId];
@@ -389,6 +387,7 @@ editor.addEventListener('drop', function (e) {
             }
         }
     
+        
         if (disconnectedBlocks.length > 0) {
             disconnectedBlocks.forEach(blockId => {
                 const blockElement = document.getElementById(blockId);
@@ -421,80 +420,44 @@ editor.addEventListener('drop', function (e) {
             executionOrder.push(current);
             let block = blocks[current];
     
-      
+            
             if (block.type.startsWith('entrada')) {
-                let [varName, value] = block.expression.split('=');
-                if (!varName || !value) {
-                    showToast(`Erro no bloco de entrada: expressão inválida "${block.expression}"`, "#f44336");
+                if (!processInputBlock(block, variables)) {
                     return;
                 }
-    
-               
-                const varNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
-                if (!varNameRegex.test(varName.trim())) {
-                    showToast(`Erro no bloco de entrada: nome de variável inválido "${varName.trim()}". O nome deve começar com uma letra ou sublinhado e pode conter letras, números e sublinhados.`, "#f44336");
-                    return;
-                }
-    
-               
-                variables[varName.trim()] = parseFloat(value.trim());
             }
     
-           
+            
             else if (block.type.startsWith('processo')) {
-                let [varName, expression] = block.expression.split('=');
-                if (!varName || !expression) {
-                    showToast(`Erro no bloco de processo: expressão inválida "${block.expression}"`, "#f44336");
-                    return;
-                }
-                varName = varName.trim();
-    
-                let usedVars = expression.match(/[a-zA-Z_][a-zA-Z0-9_]*/g); 
-                if (usedVars) {
-                    for (let v of usedVars) {
-                        if (!(v in variables)) {
-                            showToast(`Erro: Variável "${v}" usada em "${expression}" não foi definida.`, "#f44336");
-                            return;
-                        }
-                    }
-                }
-    
-                
-                let evalExpression = expression.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => `variables['${match}']`);
-                try {
-                    variables[varName] = new Function('variables', `return ${evalExpression};`)(variables);
-                } catch (error) {
-                    showToast(`Erro na expressão: "${block.expression}"`, "#f44336");
+                if (!processProcessBlock(block, variables)) {
                     return;
                 }
             }
     
-          
+            
             else if (block.type.startsWith('saída')) {
-                let outputVar = block.expression.trim();
-                if (!(outputVar in variables)) {
-                    showToast(`Erro: variável de saída '${outputVar}' não definida.`, "#f44336");
+                if (!processOutputBlock(block, variables)) {
                     return;
                 }
             }
     
-           
+            
             if (block.type === 'fim') {
                 foundEnd = true;
                 break;
             }
     
-           
+            
             current = block.output;
         }
     
-       
+        
         if (!foundEnd) {
             showToast("Erro: O fluxo não alcança um bloco 'Fim'. Verifique as conexões.", "#f44336");
             return;
         }
     
-        
+       
         let lastBlock = blocks[executionOrder[executionOrder.length - 2]];
         if (lastBlock && lastBlock.type.startsWith('saída')) {
             let outputVar = lastBlock.expression.trim();
@@ -502,31 +465,10 @@ editor.addEventListener('drop', function (e) {
                 showToast("Fluxo correto, parabéns!", "#0d6efd");
     
                 
-                const blocksToSave = [];
-                const connectionsToSave = [];
-                document.querySelectorAll('.block').forEach(block => {
-                    if (block.id && block.getAttribute('data-type') && block.style.left && block.style.top) {
-                        blocksToSave.push({
-                            id: block.id,
-                            type: block.getAttribute('data-type'),
-                            expression: block.getAttribute('data-expression') || "",
-                            x: block.style.left,
-                            y: block.style.top
-                        });
-                    }
-                });
-                instance.getConnections().forEach(conn => {
-                    if (conn.sourceId && conn.targetId) {
-                        connectionsToSave.push({
-                            sourceId: conn.sourceId,
-                            targetId: conn.targetId
-                        });
-                    }
-                });
-                localStorage.setItem('savedFlow', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
+                saveFlowToLocalStorage(blocksInEditor, connections);
                 showToast("Fluxo correto, parabéns!", "#0d6efd");
     
-               
+                
                 submitBtn.style.display = 'none';
                 submitBtl.style.display = 'block';
                 location.reload();
@@ -535,15 +477,160 @@ editor.addEventListener('drop', function (e) {
             }
         }
     });
-
-    function showToast(message, colorToast ) {
+    
+    function processInputBlock(block, variables) {
+       
+        if (!block.expression.includes('=')) {
+            showToast(`Erro no bloco de entrada: a expressão deve conter um nome de variável e um valor separados por "=". Exemplo: "Nomevar = valor".`, "#f44336");
+            return false;
+        }
+    
+       
+        let [varName, value] = block.expression.split('=');
+        if (!varName || !value) {
+            showToast(`Erro no bloco de entrada: a expressão deve conter um nome de variável e um valor separados por "=". Exemplo: "Nomevar = valor".`, "#f44336");
+            return false;
+        }
+    
+        
+        varName = varName.trim();
+    
+        
+        if (varName in variables) {
+            showToast(`Erro no bloco de entrada: a variável "${varName}" já foi definida. Use um nome único.`, "#f44336");
+            return false;
+        }
+    
+        
+        if (varName === "") {
+            showToast(`Erro no bloco de entrada: o nome da variável não pode estar vazio. Exemplo: "Nomevar = valor".`, "#f44336");
+            return false;
+        }
+    
+       
+        if (value.trim() === "") {
+            showToast(`Erro no bloco de entrada: A expressão não pode estar vazio.`, "#f44336");
+            return false;
+        }
+    
+        
+        if (block.expression.includes(',')) {
+            showToast(`Erro no bloco de entrada: vírgula não permitida na expressão, use "." para números decimais. Exemplo: "Nomevar = valor".`, "#f44336");
+            return false;
+        }
+    
+        
+        const varNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+        if (!varNameRegex.test(varName)) {
+            showToast(`Erro no bloco de entrada: nome de variável inválido "${varName}". O nome deve começar com uma letra ou sublinhado e pode conter letras, números. Espaços não são permitidos.`, "#f44336");
+            return false;
+        }
+    
+   
+        variables[varName] = parseFloat(value.trim());
+        return true;
+    }
+    
+    function processProcessBlock(block, variables) {
+       
+        if (!block.expression.includes('=')) {
+            showToast(`Erro: Use "=" para criar uma nova variável com operações usando variáveis já definidas em blocos de entradas. Exemplo: "Nomevar = var * var".`, "#f44336");
+            return false;
+        }
+    
+        
+        let [varName, expression] = block.expression.split('=');
+        if (!varName || !expression) {
+            showToast(`Erro: Expressão inválida.`, "#f44336");
+            return false;
+        }
+    
+        
+        varName = varName.trim();
+    
+       
+        const varNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+        if (!varNameRegex.test(varName)) {
+            showToast(`Erro: Nome de variável inválido. Use letras, números ou "_".`, "#f44336");
+            return false;
+        }
+    
+        
+        expression = expression.trim();
+    
+       
+        const containsDirectValue = /[0-9]/.test(expression);
+        if (containsDirectValue) {
+            showToast(`Erro: Use apenas variáveis já definidas. Não insira valores diretos.`, "#f44336");
+            return false;
+        }
+    
+       
+        let usedVars = expression.match(/[a-zA-Z_][a-zA-Z0-9_]*/g); 
+        if (usedVars) {
+            for (let v of usedVars) {
+                if (!(v in variables)) {
+                    showToast(`Erro: A variável "${v}" não foi definida. Defina-a em um bloco de entrada antes de usá-la para fazer alguma operação. `, "#f44336");
+                    return false;
+                }
+            }
+        }
+    
+        
+        try {
+            let evalExpression = expression.replace(/([a-zA-Z_][a-zA-Z0-9_]*)/g, match => `variables['${match}']`);
+            variables[varName] = new Function('variables', `return ${evalExpression};`)(variables);
+        } catch (error) {
+            showToast(`Erro: Expressão inválida. Use apenas variáveis já definidas, pode-se cria uma nova variavel para fazer operaçoẽs com variáveis existentes.`, "#f44336");
+            return false;
+        }
+    
+        return true;
+    }
+    function processOutputBlock(block, variables) {
+        let outputVar = block.expression.trim();
+        if (!(outputVar in variables)) {
+            showToast(`Erro: variável de saída '${outputVar}' não definida.`, "#f44336");
+            return false;
+        }
+        return true;
+    }
+    
+    
+    function saveFlowToLocalStorage(blocksInEditor, connections) {
+        const blocksToSave = [];
+        const connectionsToSave = [];
+        blocksInEditor.forEach(block => {
+            if (block.id && block.getAttribute('data-type') && block.style.left && block.style.top) {
+                blocksToSave.push({
+                    id: block.id,
+                    type: block.getAttribute('data-type'),
+                    expression: block.getAttribute('data-expression') || "",
+                    x: block.style.left,
+                    y: block.style.top
+                });
+            }
+        });
+        connections.forEach(conn => {
+            if (conn.sourceId && conn.targetId) {
+                connectionsToSave.push({
+                    sourceId: conn.sourceId,
+                    targetId: conn.targetId
+                });
+            }
+        });
+        localStorage.setItem('savedFlow', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
+    }
+    
+   
+    function showToast(message, colorToast) {
         toastMessage.textContent = message;
         toast.classList.add('show');
         toast.style.background = colorToast;
-        
+    
         setTimeout(function() {
             toast.classList.remove('show');
-        }, 9000); 
+        },  30000);
     }
     
    

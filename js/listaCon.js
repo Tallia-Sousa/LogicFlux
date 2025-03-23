@@ -64,23 +64,30 @@ window.onload = function () {
                 });
             }
 
-            instance.bind("connection", function (info) {
-                info.connection.setPaintStyle({
-                    stroke: "black",
-                    strokeWidth: 2
-                });
+          
 
-                // info.connection.setConnector(["Flowchart", {
-                //     stub: 20,               
-                //     gap: 5,                 
-                //     cornerRadius: 0,       
-                //     alwaysRespectStubs: true 
-                // }]);
+                instance.bind("connection", function (info) {
+           
+                    info.connection.setPaintStyle({
+                        stroke: "#808080",
+                        strokeWidth: 5 
+                    });
+        
+                    
+                    info.connection.setConnector(["Flowchart", {
+                        gap: 5, 
+                        cornerRadius: 0 
+                    }]);
+        
+                  
+                    info.connection.addOverlay([
+                        "Arrow", { width: 15, length: 15, location: 1 }
+                    ]);
+        
+                 
+                    info.connection.revalidate();
+                });
             
-                // info.connection.addOverlay([
-                //     "Arrow", { width: 15, length: 15, location: 1 }
-                // ]);
-            });
         }
 
         newBlock.addEventListener('dblclick', function () {
@@ -190,12 +197,12 @@ window.onload = function () {
 
     jsPlumb.ready(function () {
         instance = jsPlumb.getInstance({
-            Connector: ["Straight"],
-            PaintStyle: { stroke: "black", strokeWidth: 2 },
-            EndpointStyle: { radius: 5, fill: "gray" },
+            Connector: ["Flowchart"],
+            PaintStyle: { stroke: "#808080", strokeWidth: 5 },
+            EndpointStyle: { radius: 5, fill: "#808080" },
             Anchor: "AutoDefault",
             ConnectionOverlays: [
-                ["Arrow", { location: 1, width: 10, length: 10 }]
+                ["Arrow", { width: 15, length: 15, location: 1}]
             ]
         });
 
@@ -229,8 +236,8 @@ if (savedFlowList) {
                     target: targetBlock,
                     anchors: ["Bottom", "Top"],
                     endpoints: ["Dot", "Dot"],
-                    connector: ["Straight"],
-                    paintStyle: { stroke: "black", strokeWidth: 2 },
+                    connector: ["Flowchart"],
+                    paintStyle: { stroke: "#808080", strokeWidth: 5 },
                     detachable: false
                 });
             }
@@ -404,23 +411,34 @@ editor.addEventListener('drop', function (e) {
             console.log(`Processando o bloco: ${current} do tipo ${block.type}`);
     
             if (block.type.startsWith('entrada')) {
+             
                 let [varName, value] = block.expression.split('=');
                 if (!varName || !value) {
                     showToast(`Erro no bloco de entrada: expressão inválida "${block.expression}"`, "#f44336");
                     console.log(`Erro no bloco de entrada: expressão inválida "${block.expression}"`);
                     return;
                 }
-    
+            
+              
                 const varNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
                 if (!varNameRegex.test(varName.trim())) {
                     showToast(`Erro no bloco de entrada: nome de variável inválido "${varName.trim()}". O nome deve começar com uma letra ou sublinhado e pode conter letras, números e sublinhados.`, "#f44336");
                     console.log(`Erro no bloco de entrada: nome de variável inválido "${varName.trim()}"`);
                     return;
                 }
-    
+            
+              
+                if (variables.hasOwnProperty(varName.trim())) {
+                    showToast(`Erro no bloco de entrada: a variável "${varName.trim()}" já existe.`, "#f44336");
+                    console.log(`Erro no bloco de entrada: a variável "${varName.trim()}" já existe.`);
+                    return;
+                }
+            
+            
                 variables[varName.trim()] = JSON.parse(value.trim());
                 console.log(`Variável de entrada "${varName.trim()}" definida com valor: ${variables[varName.trim()]}`);
             } else if (block.type.startsWith('processo')) {
+               
                 let [varName, expression] = block.expression.split('=');
                 if (!varName || !expression) {
                     showToast(`Erro no bloco de processo: expressão inválida "${block.expression}"`, "#f44336");
@@ -428,43 +446,60 @@ editor.addEventListener('drop', function (e) {
                     return;
                 }
                 varName = varName.trim();
-    
+            
+               
+                if (variables.hasOwnProperty(varName)) {
+                    showToast(`Erro no bloco de processo: a variável "${varName}" já existe.`, "#f44336");
+                    console.log(`Erro no bloco de processo: a variável "${varName}" já existe.`);
+                    return;
+                }
+            
+                
                 let usedVars = expression.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
-                if (usedVars) {
-                    for (let v of usedVars) {
-                        if (!(v in variables)) {
-                            showToast(`Erro: Variável "${v}" usada em "${expression}" não foi definida.`, "#f44336");
-                            console.log(`Erro: Variável "${v}" usada em "${expression}" não foi definida.`);
-                            return;
-                        }
+                if (!usedVars || usedVars.length === 0) {
+                    showToast(`Erro no bloco de processo: a expressão "${expression}" deve usar variáveis existentes.`, "#f44336");
+                    console.log(`Erro no bloco de processo: a expressão "${expression}" deve usar variáveis existentes.`);
+                    return;
+                }
+            
+                
+                for (let v of usedVars) {
+                    if (!(v in variables)) {
+                        showToast(`Erro: Variável "${v}" usada em "${expression}" não foi definida.`, "#f44336");
+                        console.log(`Erro: Variável "${v}" usada em "${expression}" não foi definida.`);
+                        return;
                     }
                 }
-    
+            
                 try {
-                    // Verifique se a expressão envolve concatenação de listas
+                 
                     if (expression.includes('+')) {
                         console.log("Detectada concatenação de listas.");
-                        // Dividir a expressão por '+' e tratar cada parte
+                      
                         let parts = expression.split('+').map(part => part.trim());
-    
-                        // Verificar se todas as partes são listas e realizar a concatenação
+            
                         let result = [];
                         for (let part of parts) {
+                            if (!variables.hasOwnProperty(part)) {
+                                showToast(`Erro: Variável "${part}" não foi definida.`, "#f44336");
+                                console.log(`Erro: Variável "${part}" não foi definida.`);
+                                return;
+                            }
                             let lista = variables[part];
                             if (Array.isArray(lista)) {
                                 result = result.concat(lista);
                                 console.log(`Concatenando a lista: ${part} com valor: ${lista}`);
                             } else {
-                                showToast(`Erro: Variável "${part}" não é uma lista ou está indefinida.`, "#f44336");
-                                console.log(`Erro: Variável "${part}" não é uma lista ou está indefinida.`);
+                                showToast(`Erro: Variável "${part}" não é uma lista.`, "#f44336");
+                                console.log(`Erro: Variável "${part}" não é uma lista.`);
                                 return;
                             }
                         }
-                        // Atribuir o resultado da concatenação
+                        
                         variables[varName] = result;
                         console.log(`Resultado da concatenação: ${variables[varName]}`);
                     } else {
-                        // Se não for concatenação, avalia a expressão normalmente
+                        
                         variables[varName] = new Function('variables', `return ${expression};`)(variables);
                         console.log(`Resultado da expressão: ${variables[varName]}`);
                     }
@@ -473,10 +508,11 @@ editor.addEventListener('drop', function (e) {
                     console.log(`Erro na expressão: "${block.expression}"`, error);
                     return;
                 }
+            
             } else if (block.type.startsWith('saida')) {
                 let outputVar = block.expression.trim();
                 if (!(outputVar in variables)) {
-                    showToast(`Erro: variável de saída '${outputVar}' não definida.`, "#f44336");
+                    showToast(`Erro: variável de saída com a concatenação '${outputVar}' não definida anteriormente.`, "#f44336");
                     console.log(`Erro: variável de saída '${outputVar}' não definida.`);
                     return;
                 }
@@ -530,23 +566,25 @@ editor.addEventListener('drop', function (e) {
                 });
                 localStorage.setItem('savedFlowList', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
                 console.log("Fluxo salvo!");
+                submitBtn.style.display = 'block';
+                submitBtl.style.display = "none"
+                location.reload();
             } else {
                 showToast("Resultado incorreto!", "#f44336");
                 console.log("Resultado incorreto.");
             }
         }
-        submitBtl.style.display = 'block';
-        submitBtl.style.display = "none"
+        
     });
 
     function showToast(message, colorToast) {
         toastMessage.textContent = message;
         toast.classList.add('show');
         toast.style.background = colorToast;
-
-        setTimeout(function () {
+    
+        setTimeout(function() {
             toast.classList.remove('show');
-        }, 9000);
+        },  30000);
     }
     
     if (savedFlowList) {

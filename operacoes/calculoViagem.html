@@ -18,36 +18,102 @@
     <a href="./variaveis.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
+  
+    
+    <button id="help-btn">
+      <i class="bi bi-question-circle"></i>
+      Ajuda
+    </button>
+  
+   
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
-
+  
+   
     <button id="submit-btl">
-      <i class="bi bi-check-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Limpar Resposta
     </button>
   </header>
+<!-- Card de Ajuda -->
+<div id="help-card" class="help-card">
+  <div class="help-card-header">
+    <h3>Ajuda - Como Criar Fluxos</h3>
+    <button id="close-help-btn">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+  <div class="help-card-body">
+    <h4>Tipos de Blocos</h4>
+    <ul>
+      <li><strong>Início</strong>: Ponto de partida do fluxo.</li>
+      <li><strong>Entrada</strong>: Define variáveis e seus valores iniciais.</li>
+      <li><strong>Processo</strong>: Realiza operações com as variáveis.</li>
+      <li><strong>Saída</strong>: Representa a referência de uma variável que contém um valor ou resultado.</li>
+      <li><strong>Fim</strong>: Ponto final do fluxo.</li>
+    </ul>
 
-  <div id="app">
-    <div id="instructions">
-      <h2>Desafio: Calcular o Custo Total da Viagem</h2>
-      <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
-      <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
-      <ul>
-        <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
-        <li><strong>Quantidade de combustível necessária:</strong> 40 </li>
-        <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
-      </ul>
-      <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
-      <ol>
-        <li>Calcular o custo total do combustível.</li>
-        <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
-        <li>Mostrar a saída do custo total da viagem.</li>
-      </ol>
+    <h4>Como Criar um Fluxo</h4>
+    <ol>
+      <li>Arraste os blocos da paleta para o editor.</li>
+      <li>Conecte os blocos para definir a sequência lógica.</li>
+      <li>Clique duas vezes em um bloco para editar ou excluir.</li>
+      <li>Submeta o fluxo para verificar se está correto.</li>
+    </ol>
 
-     
+    <h4>Exemplos de Uso dos Blocos</h4>
+    <p>Os blocos abaixo são exemplos <strong>hipotéticos</strong> de como definir variáveis e realizar operações. Eles não representam necessariamente o fluxo do desafio atual.</p>
+
+    <!-- Exemplo 1: Definindo Variáveis -->
+    <div class="example">
+      <h5>1. Definindo Variáveis</h5>
+      <p>Use o bloco <strong>Entrada</strong> para representar a definição de variáveis:</p>
+      <div class="block-example">
+        <div class="block" data-type="entrada">combustivel = 5.50</div>
+        <div class="block" data-type="entrada">litros = 40</div>
+      </div>
     </div>
+
+    <!-- Exemplo 2: Realizando Operações -->
+    <div class="example">
+      <h5>2. Realizando Operações</h5>
+      <p>Use o bloco <strong>Processo</strong> para representar operações:</p>
+      <div class="block-example">
+        <div class="block" data-type="processo">custoCombus = combustivel * litros</div>
+      </div>
+    </div>
+
+    <!-- Exemplo 3: Representando a Saída de uma Variável -->
+    <div class="example">
+      <h5>3. Representando a Saída de uma Variável</h5>
+      <p>Use o bloco <strong>Saída</strong> para representar a referência de uma variável que contém um valor ou resultado:</p>
+      <div class="block-example">
+        <div class="block" data-type="saída">custoCombus</div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div id="app">
+      <div id="instructions">
+        <h2>Desafio: Calcular o Custo Total da Viagem</h2>
+        <p>Este desafio tem como objetivo treinar a lógica de programação através da visualização de processos usando fluxogramas. A proposta é resolver um problema do dia a dia, estimulando o raciocínio lógico para estruturar uma solução passo a passo.</p>
+        <p>Imagine que você está planejando uma viagem e precisa calcular o custo total com base nas seguintes informações:</p>
+        <ul>
+          <li><strong>Custo do combustível por litro:</strong> R$ 5.50</li>
+          <li><strong>Quantidade de combustível necessária:</strong> 40 </li>
+          <li><strong>Custo adicional com alimentação:</strong> R$ 120</li>
+        </ul>
+        <p>Utilize o editor de fluxogramas para organizar o raciocínio e criar um fluxo que resolva este problema. Seu desafio é definir as etapas necessárias para:</p>
+        <ol>
+          <li>Calcular o custo total do combustível.</li>
+          <li>Somar o custo total outros custos envolvidos na viagem com o combustível total gasto.</li>
+          <li>Representar a saída do custo total da viagem.</li>
+        </ol>
+  
+       
+      </div>
 
     <div id="main">
       <div id="palette">
@@ -109,6 +175,7 @@
 
 
   <script src="../js/editorcalculo.js"></script>
+  <script src="../js/ajuda.js"></script>
   
 
 

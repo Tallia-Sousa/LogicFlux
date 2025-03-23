@@ -17,16 +17,92 @@
     <a href="./dados.html" class="back-icon">
       <i class="bi bi-arrow-left"></i>
     </a>
+  
+    
+    <button id="help-btn">
+      <i class="bi bi-question-circle"></i>
+      Ajuda
+    </button>
+  
+    
     <button id="submit-btn">
       <i class="bi bi-check-circle"></i>
       Submeter Resposta
     </button>
-
+  
+   
     <button id="submit-btl">
-      <i class="bi bi-check-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Limpar Resposta
     </button>
   </header>
+
+  
+<div id="help-card" class="help-card">
+  <div class="help-card-header">
+    <h3>Ajuda - Como Criar Fluxos</h3>
+    <button id="close-help-btn">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+  <div class="help-card-body">
+    <h4>Tipos de Blocos</h4>
+    <ul>
+      <li><strong>Início</strong>: Ponto de partida do fluxo.</li>
+      <li><strong>Entrada</strong>: Define variáveis e seus valores iniciais.</li>
+      <li><strong>Processo</strong>: Realiza operações com as variáveis.</li>
+      <li><strong>Saída</strong>: Representa a variável que contém o resultado final.</li>
+      <li><strong>Fim</strong>: Ponto final do fluxo.</li>
+    </ul>
+
+    <h4>Como Criar um Fluxo</h4>
+    <ol>
+      <li>Arraste os blocos da paleta para o editor.</li>
+      <li>Conecte os blocos para definir a sequência lógica.</li>
+      <li>Clique duas vezes em um bloco para editar ou excluir.</li>
+      <li>Submeta o fluxo para verificar se está correto.</li>
+      <li>Limpe o fluxo se necessário.</li>
+    </ol>
+
+    <h4>Exemplos Práticos</h4>
+    <p>Aqui estão alguns exemplos de como usar os blocos para resolver o desafio de comparar preços de produtos em duas lojas:</p>
+
+    
+    <div class="example">
+      <h5>1. Definindo as Listas de Preços</h5>
+      <p>Use o bloco <strong>Entrada</strong> para definir as listas de preços das lojas A e B:</p>
+      <div class="block-example">
+        <div class="block" data-type="entrada">lojaA = [10, 30, 12]</div>
+        <div class="block" data-type="entrada">lojaB = [9, 16, 8]</div>
+      </div>
+      <p>Isso define <code>lojaA</code> e <code>lojaB</code> com os preços dos produtos.</p>
+    </div>
+
+   
+    <div class="example">
+      <h5>2. Unindo as Listas de Preços</h5>
+      <p>Use o bloco <strong>Processo</strong> para unir as listas de preços:</p>
+      <div class="block-example">
+        <div class="block" data-type="processo">precosCombinados = lojaA + lojaB</div>
+      </div>
+      <p>Isso cria uma nova lista chamada <code>precosCombinados</code>, que contém todos os preços das duas lojas.</p>
+    </div>
+
+ 
+    <div class="example">
+      <h5>4. Representando a Saída de uma Variável</h5>
+      <p>Use o bloco <strong>Saída</strong> para representar a referência de uma variável que contém um valor ou resultado:</p>
+      <div class="block-example">
+        <div class="block" data-type="saída">precosCombinados</div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+  
+
 
   <div id="app">
     <div id="instructions">
@@ -40,7 +116,7 @@
       <ol>
         <li>Receber as listas de preços dos produtos na Loja A e na Loja B.</li>
         <li>Unir as listas para visualizar todos os preços de ambos os locais.</li>
-        <li>Exibir a saída com a lista combinada.</li>
+        <li>Representar a saída com a lista combinada.</li>
       </ol>
       <p>Utilize o editor de fluxogramas para organizar o processo passo a passo.</p>
     </div>
@@ -90,6 +166,7 @@
   </div>
 
   <script src="../js/listaCon.js"></script>
+  <script src="../js/ajuda.js"></script>
 
 </body>
 </html>

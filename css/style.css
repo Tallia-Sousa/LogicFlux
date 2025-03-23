@@ -7,14 +7,6 @@ body {
     padding: 0;
 }
 
-.introduz{
-    background-color: #ffffff;
-	padding: 15px 30px;
-	border-bottom: 1px solid #ddd;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
 .card {
 	height: 100%;
 	display: flex;
@@ -24,8 +16,6 @@ body {
     transition: transform 0.3s ease-in-out;
    
 }
-
-
 
 .navbar-brand img { 
     max-height: 40px; 
@@ -121,14 +111,14 @@ header .btn:hover {
 
 /* cards e variaveis */
 
-.back-icon {
+/* .back-icon {
 	font-size: 1.5rem;
 	color: #007bff;
 	text-decoration: none;
 }
 .back-icon:hover {
 	color: #0056b3;
-}
+} */
 .intro-section {
 	display: flex;
 	align-items: center;
@@ -154,42 +144,6 @@ header .btn:hover {
 
 /* custoViagem */
 
-#submit-btn {
-  background: #0d6efd;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px; 
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-      }
-  
-#submit-btn i {
-  font-size: 16px;
-      }
-  
-#submit-btn:hover {
-  background:#0056b3 ;
-      }
-
-
- #submit-btl {
-  background: #f44336;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px; 
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-      }
   
 #app {
         display: flex;
@@ -434,12 +388,12 @@ header .btn:hover {
   }
 }
 
-/* Garante que as conexões fiquem acima dos blocos */
+
 .jtk-connector {
   z-index: 10;
 }
 
-/* Garante que os blocos não cubram as conexões */
+
 .block {
   z-index: 1;}
 
@@ -452,7 +406,7 @@ header .btn:hover {
     font-size: 12px;
     color: black;
     z-index: 10;
-    pointer-events: none; /* Impede que as labels interfiram com cliques */
+    pointer-events: none; 
   }
   
   .label-yes {
@@ -462,3 +416,145 @@ header .btn:hover {
   .label-no {
     color: red;
   }
+
+
+ 
+.help-card {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 80%;
+  max-width: 600px;
+}
+
+.help-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.help-card-header h3 {
+  margin: 0;
+}
+
+.help-card-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.help-card-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+
+.introduz {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  gap: 10px; 
+}
+
+
+.back-icon {
+  color: #007bff;;
+  font-size: 1.5rem;
+  text-decoration: none;
+  margin-right: auto; 
+}
+
+.back-icon:hover {
+	color: #0056b3;
+}
+
+
+#help-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+#help-btn:hover {
+  background: #5a6268;
+}
+
+
+#submit-btn {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+#submit-btn:hover {
+  background: #0056b3;
+}
+
+
+#submit-btl {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+#submit-btl:hover {
+  background: #d32f2f;
+}
+
+
+.example {
+  margin-bottom: 20px;
+}
+
+.block-example {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+  margin: 10px 0;
+}
+
+.block-example .block {
+  padding: 6px 10px; 
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px; 
+  cursor: default;
+  user-select: none;
+  width: fit-content; 
+}
