@@ -471,7 +471,10 @@ editor.addEventListener('drop', function (e) {
                 
                 submitBtn.style.display = 'none';
                 submitBtl.style.display = 'block';
-                location.reload();
+                
+                setTimeout(function() {
+                    location.reload();
+                }, 7000);
             } else {
                 showToast(`Resultado incorreto! Esperado: 340, Obtido: ${variables[outputVar]}`, "#f44336");
             }
@@ -630,7 +633,7 @@ editor.addEventListener('drop', function (e) {
     
         setTimeout(function() {
             toast.classList.remove('show');
-        },  30000);
+        },  7000);
     }
     
    

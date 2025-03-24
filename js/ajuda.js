@@ -1,4 +1,4 @@
- // Script para abrir e fechar o card de ajuda
+
  const helpBtn = document.getElementById('help-btn');
  const helpCard = document.getElementById('help-card');
  const closeHelpBtn = document.getElementById('close-help-btn');

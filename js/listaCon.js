@@ -568,7 +568,11 @@ editor.addEventListener('drop', function (e) {
                 console.log("Fluxo salvo!");
                 submitBtn.style.display = 'block';
                 submitBtl.style.display = "none"
-                location.reload();
+                
+
+                setTimeout(function() {
+                    location.reload();
+                }, 7000);
             } else {
                 showToast("Resultado incorreto!", "#f44336");
                 console.log("Resultado incorreto.");
@@ -584,7 +588,7 @@ editor.addEventListener('drop', function (e) {
     
         setTimeout(function() {
             toast.classList.remove('show');
-        },  30000);
+        },   7000);
     }
     
     if (savedFlowList) {

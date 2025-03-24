@@ -505,7 +505,7 @@ window.onload = function () {
     
         setTimeout(function() {
             toast.classList.remove('show');
-        },  30000);
+        },  7000);
     }
    
 
@@ -783,7 +783,7 @@ window.onload = function () {
                     }
                 
                     let outputValue = variables[varName];
-                    showToast(`Resultado: ${varName} = ${outputValue}`, "#0d6efd");
+                    showToast(`Resultado do calculo incorreto: ${varName} = ${outputValue}`, "#f44336");
                 }
                     
                 if (block.type === 'fim') {
@@ -811,6 +811,7 @@ window.onload = function () {
         let fatorialFinal = finalVariables[resultVariable];
         if (fatorialFinal === 120) {
             showToast(`Fluxo correto, parabéns! O fatorial de 5 é ${fatorialFinal}.`, "#0d6efd");
+            
 
           
 const blocksToSave = [];
@@ -854,9 +855,13 @@ console.log("Blocos a serem salvos:", blocksToSave);
 console.log("Conexões a serem salvas:", connectionsToSave);
 localStorage.setItem('savedFlowFat', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
 
+       
             submitBtn.style.display = 'none';
             submitBtl.style.display = 'block';
-            location.reload();
+            setTimeout(function() {
+                location.reload();
+            }, 7000);
+            
         } else {
             showToast(`Erro: O fatorial calculado é ${fatorialFinal}, mas o valor esperado para o fatorial de 5 é 120.`, "#f44336");
         }

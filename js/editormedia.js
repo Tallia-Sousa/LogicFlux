@@ -453,7 +453,7 @@ instance.bind("connectionDetached", function (info) {
     
         setTimeout(function() {
             toast.classList.remove('show');
-        },  30000);
+        },  7000);
     }
     document.getElementById('submit-btn').addEventListener('click', function () {
         submitBtl.style.display = 'none';
@@ -475,7 +475,7 @@ instance.bind("connectionDetached", function (info) {
         let variables = {}; 
         let notas = []; 
     
-        // Mapeia os blocos
+        
         blocksInEditor.forEach(block => {
             blocks[block.id] = {
                 type: block.getAttribute('data-type').toLowerCase(),
@@ -485,7 +485,7 @@ instance.bind("connectionDetached", function (info) {
             };
         });
     
-        // Mapeia as conexões
+       
         connections.forEach(conn => {
             if (blocks[conn.source.id] && blocks[conn.target.id]) {
                 blocks[conn.source.id].outputs.push(conn.target.id);
@@ -548,7 +548,7 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
-        // Executa o fluxo
+       
         let visited = new Set();
         let current = startBlocks[0]; 
         while (current) {
@@ -565,7 +565,7 @@ instance.bind("connectionDetached", function (info) {
             executionOrder.push(current);
             let block = blocks[current];
     
-            // Processa o bloco de entrada
+            
             if (block.type.startsWith('entrada')) {
                 let [varName, value] = block.expression.split('=');
                 if (!varName || !value) {
@@ -601,7 +601,7 @@ instance.bind("connectionDetached", function (info) {
                 variables[varName] = nota; 
             }
     
-            // Processa o bloco de processo
+            
             else if (block.type.startsWith('processo')) {
                 let [varName, expression] = block.expression.split('=');
                 if (!varName || !expression) {
@@ -654,7 +654,7 @@ instance.bind("connectionDetached", function (info) {
                 }
             }
     
-            // Processa o bloco de decisão
+           
             else if (block.type.startsWith('decisao')) {
                 let condition = block.expression.trim();
     
@@ -736,16 +736,16 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
-        // Verifica se há exatamente duas notas
+       
         if (notas.length !== 2) {
             showToast("Erro: É necessário definir exatamente duas notas nos blocos de entrada.", "#f44336");
             return;
         }
     
-        // Calcula a média esperada
+      
         const mediaEsperada = (notas[0] + notas[1]) / 2;
     
-        // Verifica se a média foi calculada corretamente
+ 
         let mediaCalculada = null;
         for (let varName in variables) {
             if (variables[varName] === mediaEsperada) {
@@ -759,7 +759,6 @@ instance.bind("connectionDetached", function (info) {
             return;
         }
     
-        // Verifica o resultado do usuário
         const aprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim().toLowerCase() === "aprovado");
         const reprovadoBlock = Object.keys(blocks).find(id => blocks[id].type === 'saída' && blocks[id].expression.trim().toLowerCase() === "reprovado");
     
@@ -831,10 +830,11 @@ instance.bind("connectionDetached", function (info) {
             });
         
             localStorage.setItem('savedFlowMedia', JSON.stringify({ blocks: blocksToSave, connections: connectionsToSave }));
-        
             submitBtn.style.display = 'none';
             submitBtl.style.display = 'block';
-            location.reload();
+            setTimeout(function() {
+                location.reload();
+            }, 7000);
         } else {
             showToast(`Erro: A média calculada é ${mediaCalculada}, mas o resultado informado foi "${resultadoUsuario}".`, "#f44336");
         }
